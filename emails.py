@@ -2,6 +2,25 @@ import imaplib
 import email
 from email.header import decode_header
 
+def filter_out_encodings(str):
+    return [x for x in str if x[1] != 'utf-8']
+
+def decode(str):
+    if isinstance(str, bytes):
+        return str.decode()
+    return str
+
+def first_five(str):
+    return ' '.join(str.split()[:5])
+
+def filter_header(message_array):
+    filtered_message_array = filter_out_encodings(message_array)
+    message = filtered_message_array[0][0]
+    message = decode(message)
+    message = message.strip()
+    message = first_five(message)
+    return message
+
 # account credentials
 username = "culloaiden3@gmail.com"
 password = "fexd pmwg epkf yrfy"
@@ -15,8 +34,7 @@ imap.login(username, password)
 # if you want SPAM, use imap.select("SPAM") instead
 imap.select("INBOX")
 
-sender = "tickets@kiwi.com"
-sender = "xms.noreply@xms-portal.com"
+sender = "info@email.meetup.com"
 # search for specific mails by sender
 status, messages = imap.search(None, f'FROM {sender}')
 
@@ -34,18 +52,22 @@ for mail in messages:
         if isinstance(response, tuple):
             msg = email.message_from_bytes(response[1])
             # decode the email subject
-            subject = decode_header(msg["Subject"])[0][0]
+            subject = filter_header(decode_header(msg["Subject"]))
             if isinstance(subject, bytes):
                 # if it's a bytes type, decode to str
                 subject = subject.decode()
-            print("Deleting", subject)
+            print(f'deleting {subject}')
     # mark the mail as deleted
-    imap.store(mail, "+FLAGS", "\\Deleted")
+    # imap.store(mail, "+FLAGS", "\\Deleted")
 
-# permanently remove mails that are marked as deleted
-# from the selected mailbox (in this case, INBOX)
-imap.expunge()
-# close the mailbox
-imap.close()
-# logout from the account
-imap.logout()
+# don't think this is necessary
+
+# # permanently remove mails that are marked as deleted
+# # from the selected mailbox (in this case, INBOX)
+# # imap.expunge()
+# # close the mailbox
+# imap.close()
+# # logout from the account
+# imap.logout()
+
+# my functions
