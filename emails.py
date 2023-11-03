@@ -1,6 +1,14 @@
 import imaplib
 import email
 from email.header import decode_header
+import os
+import sys
+from dotenv import load_dotenv
+
+load_dotenv()
+
+username = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
 
 def filter_out_encodings(str):
     return [x for x in str if x[1] != 'utf-8']
