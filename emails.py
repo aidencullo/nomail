@@ -5,33 +5,12 @@ import os
 import sys
 from dotenv import load_dotenv
 
+import filtering
+
 load_dotenv()
 
 username = os.getenv('USERNAME')
 password = os.getenv('PASSWORD')
-
-def filter_out_encodings(str):
-    return [x for x in str if x[1] != 'utf-8']
-
-def decode(str):
-    if isinstance(str, bytes):
-        return str.decode()
-    return str
-
-def first_five(str):
-    return ' '.join(str.split()[:5])
-
-def filter_header(message_array):
-    filtered_message_array = filter_out_encodings(message_array)
-    message = filtered_message_array[0][0]
-    message = decode(message)
-    message = message.strip()
-    message = first_five(message)
-    return message
-
-# account credentials
-username = "culloaiden3@gmail.com"
-password = "fexd pmwg epkf yrfy"
 
 # create an IMAP4 class with SSL 
 imap = imaplib.IMAP4_SSL("imap.gmail.com")
@@ -60,14 +39,14 @@ for mail in messages:
         if isinstance(response, tuple):
             msg = email.message_from_bytes(response[1])
             # decode the email subject
-            subject = filter_header(decode_header(msg["Subject"]))
+            subject = filtering.filter_header(decode_header(msg["Subject"]))
             if isinstance(subject, bytes):
                 # if it's a bytes type, decode to str
                 subject = subject.decode()
             print(f'deleting {subject}')
     # mark the mail as deleted
     # imap.store(mail, "+FLAGS", "\\Deleted")
-
+ 
 # don't think this is necessary
 
 # # permanently remove mails that are marked as deleted
@@ -77,5 +56,3 @@ for mail in messages:
 # imap.close()
 # # logout from the account
 # imap.logout()
-
-# my functions

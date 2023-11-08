@@ -1,2 +1,6 @@
 # email-filter
-email filter/organizer in python
+Filter gmail with Python
+
+### sources
+
+https://thepythoncode.com/article/deleting-emails-in-python
