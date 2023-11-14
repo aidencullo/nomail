@@ -8,9 +8,9 @@ class Filter:
     def __init__(self, username, password):
         self._imap = imaplib.IMAP4_SSL("imap.gmail.com")
         self._imap.login(username, password)
+        self._imap.select("INBOX")
 
     def delete_emails(self, sender):
-        self._imap.select("INBOX")
         status, messages = self._imap.search(None, f'FROM {sender}')
         data = []
         messages = messages[0].split(b' ')
@@ -21,8 +21,14 @@ class Filter:
             for response in msg:
                 if isinstance(response, tuple):
                     msg = email.message_from_bytes(response[1])
-                    subject = filtering.filter_header(decode_header(msg["Subject"]))
-                    if isinstance(subject, bytes):
-                        subject = subject.decode()
-                    data.append(subject)
+                    email_details = {
+                        'subject': msg["Subject"],
+                        'from': msg["From"],
+                        'to': msg["To"],
+                        'date': msg["Date"],
+                    }
+                    # subject = filtering.filter_header(decode_header(msg["Subject"]))
+                    # if isinstance(subject, bytes):
+                    #     subject = subject.decode()
+                    data.append(email_details)
         return data
