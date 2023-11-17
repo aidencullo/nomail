@@ -1,17 +1,16 @@
-import email_filter
-
+import session
 import environment
 import output
+import blacklist
+import file_op
 
 e = environment.Environment()
 
 username = e.get_username()
 password = e.get_password()
 
-sender = "info@email.meetup.com"
-sender = "donotreply@email.schwab.com"
-# emails = ["fake@gmail.com"]
-a_filter = email_filter.Filter(username, password)
-emails = a_filter.delete_emails(sender)
-
-output.print_file(emails, "testing.html")
+# senders = file_op.read_csv('blacklist.csv')
+senders = ['ecobici@info.tembici.com']
+gmail_session = session.Session(username, password)
+deleted_emails = gmail_session.delete_emails(senders)
+output.print_file(deleted_emails, 'testing.html')
