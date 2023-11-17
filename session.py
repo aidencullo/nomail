@@ -28,14 +28,12 @@ class Session:
                     if isinstance(response, tuple):
                         msg = email.message_from_bytes(response[1])
                         message_details = {
-                            'subject': msg["Subject"],
-                            'from': msg["From"],
-                            'date': msg["Date"],
+                            'subject': sanitize.format_subject(msg["Subject"]),
+                            'from': sanitize.format_email(msg["From"]),
+                            'date': sanitize.format_date(msg["Date"]),
                         }
-                        # subject = filtering.filter_header(decode_header(msg["Subject"]))
-                        # if isinstance(subject, bytes):
-                        #     subject = subject.decode()
                     email_details.append(message_details)
+                self._imap.store(mail, "+FLAGS", "\\Deleted")
         return email_details
 
     def collect_emails(self):
