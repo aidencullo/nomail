@@ -24,11 +24,7 @@ class Session:
                 for response in msg:
                     if isinstance(response, tuple):
                         msg = email.message_from_bytes(response[1])
-                        message_details = {
-                            'subject': sanitize.format_subject(msg["Subject"]),
-                            'from': sanitize.format_email(msg["From"]),
-                            'date': sanitize.format_date(msg["Date"]),
-                        }
+                        message_details = sanitize.format_data(msg)
                     email_details.append(message_details)
                 # self._imap.store(mail, "+FLAGS", "\\Deleted")
         return email_details

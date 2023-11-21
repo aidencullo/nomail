@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from email.header import decode_header
 
 def format_email(raw_email):
     for item in raw_email.split():
@@ -26,10 +27,20 @@ def format_date(date_str):
     print(date_str)
     raise ValueError('no valid date format found')
 
-def format_subject(subject):
-    words = []
-    for word in subject.split(' '):
-        if 'UTF-8' not in word:
-            words.append(word)
-    subject = ' '.join(words)
+def format_subject(msg):
+    subject = decode_header(msg["Subject"])
+    text_fragments = []
+    for data, data_type in subject:
+        try:
+            text_fragments.append(data.decode())
+        except (UnicodeDecodeError, AttributeError):
+            text_fragments.append(data)
+    subject = ' '.join(text_fragments)
     return subject
+
+def format_data(msg):    
+    return {
+        'subject': format_subject(msg),
+        'from': format_email(msg["From"]),
+        'date': format_date(msg["Date"]),
+    }

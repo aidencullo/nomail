@@ -10,6 +10,8 @@ username = e.get_username()
 password = e.get_password()
 
 senders = file_op.read_csv('blacklist.csv')
+# senders = ['trabajos_co@computrabajo.com']
+
 # print(senders)
 gmail_session = session.Session(username, password)
 deleted_emails = gmail_session.delete_emails(senders)
