@@ -14,12 +14,9 @@ class Session:
     def delete_emails(self, senders):
         email_details = []
         for sender in senders:
-            try:
-                status, messages = self._imap.search(None, f'FROM {sender}')
-            except imaplib.IMAP4.error:
-                print(f'no email from {sender} found')
-                continue
+            status, messages = self._imap.search(None, f'FROM {sender}')
             messages = messages[0].split(b' ')
+            messages = [message for message in messages if message != b'']
             for mail in messages:
                 status, msg = self._imap.fetch(mail, "(RFC822)")
                 if status != 'OK':
@@ -33,7 +30,7 @@ class Session:
                             'date': sanitize.format_date(msg["Date"]),
                         }
                     email_details.append(message_details)
-                self._imap.store(mail, "+FLAGS", "\\Deleted")
+                # self._imap.store(mail, "+FLAGS", "\\Deleted")
         return email_details
 
     def collect_emails(self):
@@ -49,3 +46,8 @@ class Session:
                     sender = sanitize.extract_email(sender)
                     senders.add(sender)
         return senders
+
+    def count_emails(self):
+        status, messages = self._imap.search(None, "ALL")
+        messages = messages[0].split(b' ')
+        return len(messages)

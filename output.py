@@ -8,13 +8,12 @@ def create_file_name():
 
 def format_data(raw_data):
     data = {}
-    keys = raw_data[0].keys()
-    for key in keys:
-        data[key] = [ raw_unit[key] for raw_unit in raw_data]
+    for key in ['subject', 'from', 'date']:
+        data[key] = [raw_unit[key] for raw_unit in raw_data]
     return data
 
 def print_file(raw_data, file_name):
     data = format_data(raw_data)
     file_name = create_file_name()
     df = pd.DataFrame(data)
-    df.to_html(file_name)
+    df.to_html(file_name, index=False)
