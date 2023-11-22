@@ -12,6 +12,7 @@ class Session:
         self._imap.select("INBOX")
 
     def delete_emails(self, senders):
+        senders = senders[:100]
         email_details = []
         for sender in senders:
             status, messages = self._imap.search(None, f'FROM {sender}')
@@ -21,11 +22,11 @@ class Session:
                 status, msg = self._imap.fetch(mail, "(RFC822)")
                 if status != 'OK':
                     raise ValueError('unexpected http response')
-                for response in msg:
-                    if isinstance(response, tuple):
-                        msg = email.message_from_bytes(response[1])
-                        message_details = sanitize.format_data(msg)
-                    email_details.append(message_details)
+                msg = [response for response in msg if isinstance(response, tuple)]
+                [response] = msg
+                msg = email.message_from_bytes(response[1])
+                message_details = sanitize.format_data(msg)
+                email_details.append(message_details)                    
                 # self._imap.store(mail, "+FLAGS", "\\Deleted")
         return email_details
 

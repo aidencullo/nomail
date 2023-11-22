@@ -16,4 +16,5 @@ def print_file(raw_data, file_name):
     data = format_data(raw_data)
     # file_name = create_file_name()
     df = pd.DataFrame(data)
+    # df.sort_values(by=['date'])
     df.to_html(file_name, index=False)
