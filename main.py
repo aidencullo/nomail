@@ -14,5 +14,4 @@ senders = ['trabajos_co@computrabajo.com']
 
 gmail_session = session.Session(username, password)
 deleted_emails = gmail_session.delete_emails(senders)
-print(list(deleted_emails))
-# output.print_file(deleted_emails, 'testing.html')
+output.print_file(deleted_emails)

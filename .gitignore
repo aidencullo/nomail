@@ -1,4 +1,10 @@
-play.py
+# dirs
+__pycache__/
 
+# misc files
+play.py
+.env
+
+# output files
 *.csv
 *.html

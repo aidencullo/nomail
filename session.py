@@ -6,6 +6,7 @@ import filtering
 import sanitize
 
 class Session:
+    """ Google email session """
     def __init__(self, username, password, provider="imap.gmail.com", folder="INBOX"):
         self._imap = imaplib.IMAP4_SSL(provider)
         self._imap.login(username, password)
@@ -33,7 +34,7 @@ class Session:
             msg_ids = self.get_msg_ids_from_sender(sender)
             for msg_id in msg_ids:
                 yield sanitize.format_data(self.get_msg_from_id(msg_id))
-                # self._imap.store(msg_id, "+FLAGS", "\\Deleted")
+                self._imap.store(msg_id, "+FLAGS", "\\Deleted")
 
     def collect_emails(self):
         msg_ids = self.get_msg_ids_from_all()
@@ -42,5 +43,5 @@ class Session:
         # return senders
 
     def count_emails(self):
-        status, [msg_ids] = self._imap.search(None, "ALL")
-        return len(self.split_if_full(msg_ids))
+        msg_ids = self.get_msg_ids_from_all()
+        return len(msg_ids)

@@ -1,9 +1,16 @@
-import pandas as pd
 from datetime import datetime
+from pathlib import Path
+
+import pandas as pd
+
 
 def create_file_name():
-    file_name = datetime.today().isoformat()
-    file_name = 'summaries/' + file_name + '.html'
+    date = datetime.today()
+    file_dir_array = ['summaries', date.year, date.month, date.day]
+    file_dir = '/'.join(str(x) for x in file_dir_array)
+    file_name_array = [date.time(), '.html']
+    file_name = '/'.join((file_dir, ''.join(str(x) for x in file_name_array)))
+    Path(file_dir).mkdir(parents=True, exist_ok=True)
     return file_name
 
 def format_data(raw_data):
@@ -13,9 +20,10 @@ def format_data(raw_data):
         data[key] = [raw_unit[key] for raw_unit in raw_data]
     return data
 
-def print_file(raw_data, file_name):
+def print_file(raw_data, file_name=None):
     data = format_data(raw_data)
-    # file_name = create_file_name()
+    if file_name is None:
+        file_name = create_file_name()
     df = pd.DataFrame(data)
     # df.sort_values(by=['date'])
     df.to_html(file_name, index=False)
