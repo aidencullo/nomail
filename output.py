@@ -7,6 +7,7 @@ def create_file_name():
     return file_name
 
 def format_data(raw_data):
+    raw_data = list(raw_data)
     data = {}
     for key in ['subject', 'from', 'date']:
         data[key] = [raw_unit[key] for raw_unit in raw_data]
