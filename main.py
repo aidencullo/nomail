@@ -8,10 +8,10 @@ e = environment.Environment()
 
 username = e.get_username()
 password = e.get_password()
-
-# senders = file_op.read_csv('blacklist.csv')
-senders = ['trabajos_co@computrabajo.com']
-
 gmail_session = session.Session(username, password)
-deleted_emails = gmail_session.delete_emails(senders)
+
+senders = file_op.read_csv('blacklist.csv')
+# senders = ['rewards@e.starbucks.com']
+
+deleted_emails = list(gmail_session.delete_emails(senders))
 output.print_file(deleted_emails)

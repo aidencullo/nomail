@@ -16,6 +16,7 @@ class Session:
         return byte_str.split(b' ') if byte_str else []
 
     def get_msg_ids_from_sender(self, sender: str) -> list:
+        _, [msg_ids] = self._imap.search(None, f'FROM {sender}')
         return self.get_msg_ids(f'FROM {sender}')
 
     def get_msg_ids_from_all(self) -> list:
@@ -23,25 +24,29 @@ class Session:
 
     def get_msg_ids(self, desc="ALL") -> list:
         _, [msg_ids] = self._imap.search(None, desc)
-        return self.split_if_full(msg_ids)[:5]
+        return self.split_if_full(msg_ids)
 
     def get_msg_from_id(self, msg_id: int) -> email.message.Message:
         msg_bytes = self._imap.fetch(msg_id, "(RFC822)")[1][0][1]
         return email.message_from_bytes(msg_bytes)
 
     def delete_emails(self, senders):
+        emails = []
         for sender in senders:
             msg_ids = self.get_msg_ids_from_sender(sender)
             for msg_id in msg_ids:
-                yield sanitize.format_data(self.get_msg_from_id(msg_id))
+                emails.append(sanitize.format_data(self.get_msg_from_id(msg_id)))
                 self._imap.store(msg_id, "+FLAGS", "\\Deleted")
+        self._imap.expunge()
+        print(f'deleting {len(emails)} emails')
+        return emails
 
     def collect_emails(self):
         msg_ids = self.get_msg_ids_from_all()
         for msg_id in msg_ids:
-            yield sanitize.format_data(self.get_msg_from_id(msg_id))
+            yield sanitize.format_email(self.get_msg_from_id(msg_id))
         # return senders
 
-    def count_emails(self):
+    def count_emails(self, sender=None, folder="inbox"):
         msg_ids = self.get_msg_ids_from_all()
-        return len(msg_ids)
+        print(f'there are {len(msg_ids)} emails in {folder}')
