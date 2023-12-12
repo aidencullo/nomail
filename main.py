@@ -1,4 +1,4 @@
-import session
+import mypackage.session as session
 import environment
 import output
 import blacklist
@@ -11,7 +11,6 @@ password = e.get_password()
 gmail_session = session.Session(username, password)
 
 senders = file_op.read_csv('blacklist.csv')
-# senders = ['rewards@e.starbucks.com']
+senders = ['no-reply@spotify.com']
 
-deleted_emails = list(gmail_session.delete_emails(senders))
-output.print_file(deleted_emails)
+deleted_emails = gmail_session.move(senders)
