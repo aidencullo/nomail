@@ -1,3 +1,5 @@
-from collections import namedtuple
+class Action:
+    """Action take on an email"""
 
-Action = namedtuple('Action', [])
+    def act(self, email):
+        print(email)

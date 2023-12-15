@@ -10,5 +10,4 @@ gmail_session = Session(credentials)
 
 senders = read_csv('data/blacklist.csv')
 
-emails = gmail_session.run(Action(), Filter())
-print(emails)
+gmail_session.run(Action(), Filter())
