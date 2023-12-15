@@ -1,16 +1,14 @@
-import mypackage.session as session
-import environment
-import output
-import blacklist
-import file_op
+from src.action import Action
+from src.filtering import Filter
+from src.session import Session
+from src.environment import get_credentials
+from src.io import read_csv
 
-e = environment.Environment()
+credentials = get_credentials()
 
-username = e.get_username()
-password = e.get_password()
-gmail_session = session.Session(username, password)
+gmail_session = Session(credentials)
 
-senders = file_op.read_csv('blacklist.csv')
-senders = ['no-reply@spotify.com']
+senders = read_csv('data/blacklist.csv')
 
-deleted_emails = gmail_session.move(senders)
+emails = gmail_session.run(Action(), Filter())
+print(emails)
