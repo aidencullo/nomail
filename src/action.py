@@ -17,3 +17,15 @@ class ActionDelete(Action):
 
     def act(self, email):
         self._imap.delete_msg(email)
+
+class ActionMove(Action):
+    """Move email"""
+
+    def act(self, email):
+        self._imap.move_msg(email)
+
+class ActionPrint(Action):
+    """Print email"""
+
+    def act(self, email):
+        print(email)
