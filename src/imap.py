@@ -9,12 +9,33 @@ from .env import RATE_LIMIT, PROVIDER, CREDENTIALS
 class Imap():
     """Access to imaplib library"""
 
-    def __init__(self, credentials=CREDENTIALS):
-        self._imap = imaplib.IMAP4_SSL(PROVIDER)
-        self._imap.login(*credentials)
-        self._imap.select()
+    _instance = None
+    
+    @classmethod
+    def instance(cls):
+        if cls._instance is None:
+            print('creating new imap')
+            cls._instance = cls.__new__(cls)
+            cls._instance._imap = imaplib.IMAP4_SSL(PROVIDER)
+            cls._instance._imap.login(*CREDENTIALS)
+            cls._instance._imap.select()
+        return cls._instance
+
+    @classmethod
+    def destroy(cls):
+        if cls._instance is None:
+            print('no imap instance')
+        else:
+            print('destroying imap instance')
+            cls._instance._imap.expunge()
+            cls._instance._imap.close()
+            cls._instance._imap.logout()
+
+    def __init__(self):
+        raise RuntimeError('Call instance() instead')
 
     def __del__(self):
+        print(f"deconstructing imap")
         self._imap.expunge()        
     
     def get_msg_data(self, uid):
@@ -36,3 +57,7 @@ class Imap():
         print(f"moving {uid}")
         self._imap.copy(uid, "Trabajos")
         self._imap.store(uid, "+FLAGS", "\\Deleted")
+
+    def copy_msg(self, uid):
+        print(f"copying {uid}")
+        self._imap.copy(uid, "Trabajos")

@@ -3,6 +3,10 @@ from .email import Email
 
 class EmailImapAdapter(Imap):
     """Adapter for imap class"""
+    
+    def __del__(self):
+        print(f"deconstructing imap")
+        super(DerivativeClass, self).__del__() 
 
     def get_msgs(self, email_filter):
         emails = [Email(msg, uid) for msg, uid in
@@ -15,3 +19,7 @@ class EmailImapAdapter(Imap):
             
     def move_msg(self, email):
         super().move_msg(bytes(str(email.uid), 'ascii'))
+
+    def copy_msg(self, email):
+        super().copy_msg(bytes(str(email.uid), 'ascii'))
+        
