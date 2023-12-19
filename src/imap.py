@@ -14,22 +14,11 @@ class Imap():
     @classmethod
     def instance(cls):
         if cls._instance is None:
-            print('creating new imap')
             cls._instance = cls.__new__(cls)
             cls._instance._imap = imaplib.IMAP4_SSL(PROVIDER)
             cls._instance._imap.login(*CREDENTIALS)
             cls._instance._imap.select()
         return cls._instance
-
-    @classmethod
-    def destroy(cls):
-        if cls._instance is None:
-            print('no imap instance')
-        else:
-            print('destroying imap instance')
-            cls._instance._imap.expunge()
-            cls._instance._imap.close()
-            cls._instance._imap.logout()
 
     def __init__(self):
         raise RuntimeError('Call instance() instead')
@@ -51,11 +40,6 @@ class Imap():
         
     def delete_msg(self, uid):
         print(f"deleting {uid}")
-        self._imap.store(uid, "+FLAGS", "\\Deleted")
-        
-    def move_msg(self, uid):
-        print(f"moving {uid}")
-        self._imap.copy(uid, "Trabajos")
         self._imap.store(uid, "+FLAGS", "\\Deleted")
 
     def copy_msg(self, uid):

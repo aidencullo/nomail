@@ -24,15 +24,15 @@ class ActionCopy(Action):
     def act(self, email):
         self._imap.copy_msg(email)
 
-
 class ActionPrint(Action):
     """Print email"""
 
     def act(self, email):
         print(email.sender)
-        
-class ActionMove(ActionCopy):
+
+class ActionMove(Action):
     """Move email"""
 
     def act(self, email):
-        self._imap.move_msg(email)
+        self._imap.copy_msg(email)
+        self._imap.delete_msg(email)

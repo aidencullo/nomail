@@ -1,4 +1,4 @@
-from src.action import ActionDelete, ActionMove, ActionPrint, ActionCopy
+from src.action import ActionDelete, ActionPrint, ActionCopy, ActionMove
 from src.filtering import EmailFilterAll, EmailFilterNone, EmailFilterList
 from src.session import Session
 from src.io import read_csv
@@ -8,8 +8,7 @@ gmail_session = Session()
 senders = read_csv('data/blacklist.csv')
 
 email_filter = EmailFilterNone()
-action_copy = ActionCopy()
-action_delete = ActionDelete()
+actions = [ActionCopy(), ActionDelete()]
+actions = [ActionMove()]
 
-gmail_session.run(action_copy, email_filter)
-gmail_session.run(action_delete, email_filter)
+gmail_session.run(actions, email_filter)

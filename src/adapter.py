@@ -16,10 +16,6 @@ class EmailImapAdapter(Imap):
             
     def delete_msg(self, email):
         super().delete_msg(bytes(str(email.uid), 'ascii'))
-            
-    def move_msg(self, email):
-        super().move_msg(bytes(str(email.uid), 'ascii'))
 
     def copy_msg(self, email):
         super().copy_msg(bytes(str(email.uid), 'ascii'))
-        

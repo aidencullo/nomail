@@ -9,7 +9,8 @@ class Session:
     def __del__(self):
         EmailImapAdapter.destroy()
 
-    def run(self, action, email_filter):
+    def run(self, actions, email_filter):
         emails = self._imap.get_msgs(email_filter)
-        for email in emails:
-            action.act(email)
+        for action in actions:
+            for email in reversed(emails):
+                action.act(email)
