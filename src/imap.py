@@ -4,37 +4,32 @@ import imaplib
 import email
 
 from .util import split_bytes, to_int
-from .email import Email
-
-RATE_LIMIT = 1
-PROVIDER = "imap.gmail.com"
+from .env import RATE_LIMIT, PROVIDER, CREDENTIALS
 
 class Imap():
     """Access to imaplib library"""
 
-    def __init__(self, credentials):
+    def __init__(self, credentials=CREDENTIALS):
         self._imap = imaplib.IMAP4_SSL(PROVIDER)
         self._imap.login(*credentials)
         self._imap.select()
 
-    # def __del__(self):
-    #     self._imap.expunge()        
+    def __del__(self):
+        self._imap.expunge()        
     
     def get_msg_data(self, uid):
         msg_bytes = self._imap.fetch(uid, "(RFC822)")[1][0][1]
         return email.message_from_bytes(msg_bytes)
 
-    def get_uids(self, email_filter):
+    def get_uids(self):
         _, [uids] = self._imap.search(None, "ALL")
         return split_bytes(uids)[:RATE_LIMIT]
     
-    def get_msgs(self, email_filter):
-        return [self.get_msg_data(uid) for uid in self.get_uids(email_filter)]
-
-class EmailImapAdapter(Imap):
-    
-    def get_msgs(self, email_filter):
-        return [Email(msg) for msg in super().get_msgs(email_filter)]
+    def get_msgs(self):
+        return [self.get_msg_data(uid) for uid in self.get_uids()]
+        
+    def delete_msg(self, uid):
+        self._imap.store(uid, "+FLAGS", "\\Deleted")
 
 # class ImapWrapper(ABC):
 #     """ Wrap imaplib internals """

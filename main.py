@@ -1,13 +1,11 @@
-from src.action import Action
-from src.filtering import Filter
+from src.action import ActionDelete
+from src.filtering import EmailFilterAll, EmailFilterNone, EmailFilterList
 from src.session import Session
-from src.environment import get_credentials
 from src.io import read_csv
 
-credentials = get_credentials()
-
-gmail_session = Session(credentials)
+gmail_session = Session()
 
 senders = read_csv('data/blacklist.csv')
+senders = ['PayPal@emails.paypal.com']
 
-gmail_session.run(Action(), Filter())
+gmail_session.run(ActionDelete(), EmailFilterList(senders))
