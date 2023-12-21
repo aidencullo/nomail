@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from .adapter import EmailImapAdapter
 
-class Action:
+class Action(ABC):
     """Action take on an email"""
 
     def __init__(self):
