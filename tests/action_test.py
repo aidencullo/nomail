@@ -71,7 +71,8 @@ class TestActionMove:
 
 
 class TestAction:
-    def test_act(self, mocked_email):
-        # Act & Assert
+    def test_act(self):
+        # Assert
         with pytest.raises(TypeError):
+            # Act
             Action()
