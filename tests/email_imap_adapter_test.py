@@ -1,9 +1,9 @@
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, create_autospec
 
 import pytest
 
 from src.adapter import EmailImapAdapter
-import src.email
+from src.email import Email
 import src.imap
 from src.filtering import EmailFilter
 
@@ -20,6 +20,10 @@ class TestEmailImapAdapter:
         mock = Mock(return_value=True)
         return Mock(return_value=mock)
 
+    @pytest.fixture(name="email_mock")
+    def fixture_email(self):
+        return create_autospec(Email)
+    
     @patch("src.adapter.super", return_value=Mock())
     @patch("src.email.Email")
     def test_get_msgs(self, _, super_mock, email_imap_adapter_mock,
@@ -27,7 +31,6 @@ class TestEmailImapAdapter:
         
         # Arrange
         super_class_mock = super_mock.return_value
-        # optimize this
         super_class_mock.get_msgs = Mock(return_value=[None])
         super_class_mock.get_uids = Mock(return_value=[None])
 
@@ -37,26 +40,31 @@ class TestEmailImapAdapter:
         # Assert
         assert len(result) == 1
 
-    # def test_delete_msg(self, email_imap_adapter):
-    #     # Mock the underlying delete_msg method
-    #     email_imap_adapter.delete_msg = lambda uid: None  # You might want to mock this to verify it's called correctly
+        
+    @patch("src.adapter.super", return_value=Mock())
+    def test_delete_msg(self, super_mock, email_mock, email_imap_adapter_mock):
+        
+        # Arrange
+        super_class_mock = super_mock.return_value
+        
+        # Act
+        email_imap_adapter_mock.delete_msg(email_mock)
+        
+        # Assert
+        assert super_class_mock.delete_msg.called
+        assert not super_class_mock.copy_msg.called
+        assert not super_class_mock.get_msgs.called
 
-    #     # Create a test email
-    #     test_email = Email(b'Test Message', 123)
-
-    #     # Call the method you want to test
-    #     email_imap_adapter.delete_msg(test_email)
-
-    #     # Add assertions based on your requirements
-
-    # def test_copy_msg(self, email_imap_adapter):
-    #     # Mock the underlying copy_msg method
-    #     email_imap_adapter.copy_msg = lambda uid: None  # You might want to mock this to verify it's called correctly
-
-    #     # Create a test email
-    #     test_email = Email(b'Test Message', 123)
-
-    #     # Call the method you want to test
-    #     email_imap_adapter.copy_msg(test_email)
-
-    #     # Add assertions based on your requirements
+    @patch("src.adapter.super", return_value=Mock())
+    def test_copy_msg(self, super_mock, email_mock, email_imap_adapter_mock):
+        
+        # Arrange
+        super_class_mock = super_mock.return_value
+        
+        # Act
+        email_imap_adapter_mock.copy_msg(email_mock)
+        
+        # Assert
+        assert super_class_mock.copy_msg.called
+        assert not super_class_mock.delete_msg.called
+        assert not super_class_mock.get_msgs.called
