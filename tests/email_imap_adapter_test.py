@@ -1,10 +1,11 @@
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
 from src.adapter import EmailImapAdapter
 import src.email
 import src.imap
+from src.filtering import EmailFilter
 
 
 class TestEmailImapAdapter:
@@ -15,31 +16,26 @@ class TestEmailImapAdapter:
         return EmailImapAdapter.instance()
 
     @pytest.fixture(name="email_filter_mock")
-    def fixture_mock_email_filter(self):
-        return Mock()
+    def fixture_email_filter(self):
+        mock = Mock(return_value=True)
+        return Mock(return_value=mock)
 
-    @patch("src.adapter.super")
-    @patch("src.imap.Imap")
+    @patch("src.adapter.super", return_value=Mock())
     @patch("src.email.Email")
-    def test_get_msgs(self, email_mock, imap_mock, super_mock, email_filter_mock,
-                      email_imap_adapter_mock):
+    def test_get_msgs(self, _, super_mock, email_imap_adapter_mock,
+                      email_filter_mock):
+        
         # Arrange
-        email_mock.return_value = None
-        email_filter_mock.test = MagicMock(return_value=True)
-        msgs_mock = [None]
-        uids_mock = [None]
-        super_mock.return_value = Mock()
         super_class_mock = super_mock.return_value
-        super_class_mock.get_msgs = Mock(return_value=msgs_mock)
-        super_class_mock.get_uids = Mock(return_value=uids_mock)
+        # optimize this
+        super_class_mock.get_msgs = Mock(return_value=[None])
+        super_class_mock.get_uids = Mock(return_value=[None])
 
         # Act
         result = email_imap_adapter_mock.get_msgs(email_filter_mock)
 
         # Assert
         assert len(result) == 1
-        # assert isinstance(result[0], Email)
-        # assert isinstance(result[1], Email)
 
     # def test_delete_msg(self, email_imap_adapter):
     #     # Mock the underlying delete_msg method
