@@ -1,21 +1,21 @@
-from unittest.mock import Mock, patch, create_autospec
-from unittest import TestCase
+from unittest.mock import Mock, patch
 
 import pytest
 
 from src.adapter import EmailImapAdapter
-from src.email import Email
-import src.imap
-from src.filtering import EmailFilter
 
 
-@patch("src.adapter.super")
+
+@patch("src.adapter.Imap.copy_msg")
+@patch("src.adapter.Imap.delete_msg")
+@patch("src.adapter.Imap.get_uids")
+@patch("src.adapter.Imap.get_msgs")
 @patch("src.email.Email")
 class TestEmailImapAdapter:
 
     # Arrange
     # SUT
-    @pytest.fixture(name="email_imap_adapter")
+    @pytest.fixture(name="email_imap_adapter", autouse=True)
     def fixture_email_imap_adapter(self):
         return EmailImapAdapter()
 
@@ -23,43 +23,46 @@ class TestEmailImapAdapter:
     def fixture_email_filter(self):
         return Mock(test=Mock(return_value=True))
 
-    def test_get_msgs(self, _, super_mock, email_imap_adapter,
-                      email_filter_mock):
+    def test_get_msgs(self, email_mock, get_msgs_mock, get_uids_mock,
+                      delete_msg_mock, copy_msg_mock,
+                      email_imap_adapter, email_filter_mock):
 
         # Arrange
-        super_class_mock = Mock()
-        super_class_mock.get_msgs = Mock(return_value=[None])
-        super_class_mock.get_uids = Mock(return_value=[None])
-        super_mock.return_value = super_class_mock
+        get_uids_mock.return_value = [None]
+        get_msgs_mock.return_value = [None]
 
         # Act
         result = email_imap_adapter.get_msgs(email_filter_mock)
 
         # Assert
         assert len(result) == 1
+        assert get_uids_mock.called
+        assert get_msgs_mock.called
+        assert not delete_msg_mock.called
+        assert not copy_msg_mock.called
 
-    def test_delete_msg(self, email_mock, super_mock, email_imap_adapter):
-        
-        # Arrange
-        super_class_mock = super_mock.return_value
-        
+    def test_delete_msg(self, email_mock, get_msgs_mock, get_uids_mock,
+                        delete_msg_mock, copy_msg_mock,
+                        email_imap_adapter, email_filter_mock):
+
         # Act
         email_imap_adapter.delete_msg(email_mock)
-        
-        # Assert
-        assert super_class_mock.delete_msg.called
-        assert not super_class_mock.copy_msg.called
-        assert not super_class_mock.get_msgs.called
 
-    def test_copy_msg(self, email_mock, super_mock, email_imap_adapter):
-        
-        # Arrange
-        super_class_mock = super_mock.return_value
-        
+        # Assert
+        assert not get_uids_mock.called
+        assert not get_msgs_mock.called
+        assert delete_msg_mock.called
+        assert not copy_msg_mock.called
+
+    def test_copy_msg(self, email_mock, get_msgs_mock, get_uids_mock,
+                      delete_msg_mock, copy_msg_mock,
+                      email_imap_adapter, email_filter_mock):
+
         # Act
         email_imap_adapter.copy_msg(email_mock)
-        
+
         # Assert
-        assert super_class_mock.copy_msg.called
-        assert not super_class_mock.delete_msg.called
-        assert not super_class_mock.get_msgs.called
+        assert not get_uids_mock.called
+        assert not get_msgs_mock.called
+        assert not delete_msg_mock.called
+        assert copy_msg_mock.called

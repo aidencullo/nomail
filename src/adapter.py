@@ -1,8 +1,8 @@
 import src.email
-import src.imap
+from src.imap import Imap
 
 
-class EmailImapAdapter(src.imap.Imap):
+class EmailImapAdapter(Imap):
     """Adapter for imap class"""
 
     def get_msgs(self, email_filter):
