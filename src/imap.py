@@ -9,22 +9,12 @@ from .env import RATE_LIMIT, PROVIDER, CREDENTIALS
 class Imap():
     """Access to imaplib library"""
 
-    _instance = None
-    
-    @classmethod
-    def instance(cls):
-        if cls._instance is None:
-            cls._instance = cls.__new__(cls)
-            cls._instance._imap = imaplib.IMAP4_SSL(PROVIDER)
-            cls._instance._imap.login(*CREDENTIALS)
-            cls._instance._imap.select()
-        return cls._instance
-
     def __init__(self):
-        raise RuntimeError('Call instance() instead')
+        self._imap = imaplib.IMAP4_SSL(PROVIDER)
+        self._imap.login(*CREDENTIALS)
+        self._imap.select()
 
     def __del__(self):
-        print(f"deconstructing imap")
         self._imap.expunge()        
     
     def get_msg_data(self, uid):
