@@ -42,3 +42,10 @@ class ActionMove(Action):
     def act(self, email):
         self._imap.copy_msg(email)
         self._imap.delete_msg(email)
+
+
+class ActionNone(Action):
+    """Null action"""
+
+    def act(self, email):
+        pass
