@@ -9,7 +9,7 @@ class Email:
     def __init__(self, msg_data, uid):
         self.recipient = format_email(msg_data['To'])
         self.sender = format_email(msg_data['From'])
-        self.subject = msg_data['Subject']
+        self.subject = format_subject(msg_data['Subject'])
         self.date = format_date(msg_data['Date'])
         self.uid = format_uid(uid)
 

@@ -5,17 +5,16 @@ import pytest
 from src.adapter import EmailImapAdapter
 
 
-
 @patch("src.adapter.Imap.copy_msg")
 @patch("src.adapter.Imap.delete_msg")
 @patch("src.adapter.Imap.get_uids")
 @patch("src.adapter.Imap.get_msgs")
 @patch("src.email.Email")
-class TestEmailImapAdapter:
+class TestAdapter:
 
     # Arrange
     # SUT
-    @pytest.fixture(name="email_imap_adapter", autouse=True)
+    @pytest.fixture(name="email_imap_adapter")
     def fixture_email_imap_adapter(self):
         return EmailImapAdapter()
 
