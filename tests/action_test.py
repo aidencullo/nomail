@@ -1,10 +1,10 @@
-from unittest.mock import MagicMock, patch, create_autospec
+from unittest.mock import create_autospec, patch
 
 import pytest
-
-from src.action import (ActionDelete, ActionCopy, ActionPrint,
-                        ActionMove, Action)
+from src.action import (Action, ActionCopy, ActionDelete, ActionMove,
+                        ActionPrint)
 from src.email import Email
+
 
 @patch("src.action.EmailImapAdapter.delete_msg")
 def test_delete(delete_msg_mock):
@@ -48,6 +48,7 @@ def test_print(capsys):
     # Assert
     assert captured.out.strip() == str(mock_email.sender)
 
+
 @patch("src.action.EmailImapAdapter.copy_msg")
 @patch("src.action.EmailImapAdapter.delete_msg")
 def test_move(delete_msg_mock, copy_msg_mock):
@@ -62,6 +63,7 @@ def test_move(delete_msg_mock, copy_msg_mock):
     # Assert
     copy_msg_mock.assert_called_with(mock_email)
     delete_msg_mock.assert_called_with(mock_email)
+
 
 def test_abstract():
     # Assert
