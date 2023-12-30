@@ -10,7 +10,6 @@ def fixture_class():
 
         def __init__(self, descriptor):
             self.descriptor = descriptor
-
     return Class
 
 
