@@ -1,8 +1,7 @@
-from src.sanitize import (format_date, format_email, format_subject,
-                          format_uid)
-
 import src.sanitize as sanitize
-from src.descriptors import Descriptor
+from src.descriptor import Descriptor
+from src.sanitize import format_date, format_email, format_subject, format_uid
+
 
 class Email:
     """Hold email details and data"""

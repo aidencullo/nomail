@@ -18,7 +18,6 @@ class ActionDelete(Action):
     """Delete email"""
 
     def act(self, email):
-        print(f"{EmailImapAdapter()}")
         self._imap.delete_msg(email)
 
 
