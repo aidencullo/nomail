@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 
 import pytest
-from src.filtering import EmailFilterAll, EmailFilterList, EmailFilterNone
+from src.email_filter import EmailFilterAll, EmailFilterList, EmailFilterNone
 
 
 def email_mock_factory(sender):

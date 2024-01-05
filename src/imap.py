@@ -1,22 +1,18 @@
-from itertools import chain
-
-import imaplib
 import email
+import imaplib
+import pickle
 
-from .util import split_bytes, to_int
-from .env import RATE_LIMIT, PROVIDER, CREDENTIALS
+from src.env import CREDENTIALS, PROVIDER, RATE_LIMIT
+from src.util import split_bytes
+
 
 class Imap():
-    """Access to imaplib library"""
 
     def __init__(self):
         self._imap = imaplib.IMAP4_SSL(PROVIDER)
         self._imap.login(*CREDENTIALS)
         self._imap.select()
 
-    def __del__(self):
-        self._imap.expunge()        
-    
     def get_msg_data(self, uid):
         msg_bytes = self._imap.fetch(uid, "(RFC822)")[1][0][1]
         return email.message_from_bytes(msg_bytes)
@@ -27,7 +23,7 @@ class Imap():
 
     def get_msgs(self):
         return [self.get_msg_data(uid) for uid in self.get_uids()]
-        
+
     def delete_msg(self, uid):
         print(f"deleting {uid}")
         self._imap.store(uid, "+FLAGS", "\\Deleted")

@@ -1,6 +1,6 @@
 from src.action import (ActionDelete, ActionPrint, ActionCopy,
                         ActionMove, ActionNone)
-from src.filtering import EmailFilterAll, EmailFilterNone, EmailFilterList
+from src.email_filter import EmailFilterAll, EmailFilterNone, EmailFilterList
 from src.session import Session
 from src.io import read_csv
 
