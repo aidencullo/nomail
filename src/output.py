@@ -13,6 +13,7 @@ def create_file_name():
     Path(file_dir).mkdir(parents=True, exist_ok=True)
     return file_name
 
+
 def format_data(raw_data):
     raw_data = list(raw_data)
     data = {}
@@ -20,10 +21,10 @@ def format_data(raw_data):
         data[key] = [raw_unit[key] for raw_unit in raw_data]
     return data
 
+
 def print_file(raw_data, file_name=None):
     data = format_data(raw_data)
     if file_name is None:
         file_name = create_file_name()
-    df = pd.DataFrame(data)
-    # df.sort_values(by=['date'])
-    df.to_html(file_name, index=False)
+    data_frame = pd.DataFrame(data)
+    data_frame.to_html(file_name, index=False)
