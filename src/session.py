@@ -1,7 +1,7 @@
 from .adapter import EmailImapAdapter
 
+
 class Session:
-    """ Google email session """
 
     def __init__(self):
         self._imap = EmailImapAdapter()

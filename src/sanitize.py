@@ -2,19 +2,21 @@ import re
 from datetime import datetime
 from email.header import decode_header
 
+
 def format_email(raw_email):
     if raw_email is None:
         return None
     for item in raw_email.split():
         if '@' in item:
             email = item
-    email = re.sub('[<>]',"", email)
+    email = re.sub('[<>]', "", email)
     return email
 
+
 def format_date(date_str):
-    date_str = re.sub('\(.*\)',"", date_str)
-    date_str = re.sub('GMT',"", date_str)
-    date_str = re.sub('UTC',"", date_str)
+    date_str = re.sub('\(.*\)', "", date_str)
+    date_str = re.sub('GMT', "", date_str)
+    date_str = re.sub('UTC', "", date_str)
     date_str = date_str.strip()
 
     date_format_1 = "%d %b %Y %H:%M:%S %z"
@@ -33,6 +35,7 @@ def format_date(date_str):
             pass
     raise ValueError('no valid date format found')
 
+
 def format_subject(subject_str):
     subject = decode_header(subject_str)
     text_fragments = []
@@ -44,6 +47,6 @@ def format_subject(subject_str):
     subject = ' '.join(text_fragments)
     return subject
 
+
 def format_uid(uid_str):
     return int(uid_str)
-

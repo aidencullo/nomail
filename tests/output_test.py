@@ -67,7 +67,8 @@ class TestOutput:
 
     @patch('src.output.create_file_name')
     @patch('src.output.pd.DataFrame.to_html')
-    def test_print_file_present_file_name(self, to_html_mock, create_file_name_mock, raw_data_mock):
+    def test_print_file_present_file_name(self, to_html_mock,
+                                          create_file_name_mock, raw_data_mock):
 
         # Act
         print_file(raw_data_mock, "")
