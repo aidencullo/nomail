@@ -3,6 +3,7 @@ __pycache__/
 
 # misc files
 play.py
+main.py
 test.py
 .env
 

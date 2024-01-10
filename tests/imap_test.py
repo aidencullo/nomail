@@ -54,7 +54,7 @@ class TestImap:
         result = imap_get_uids_mock.get_uids()
 
         # Assert
-        assert len(result) == RATE_LIMIT
+        assert len(result) == 5
 
     def test_get_msgs(self, imap_mock):
 

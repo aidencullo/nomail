@@ -1,6 +1,5 @@
 import email
 import imaplib
-import pickle
 
 from src.env import CREDENTIALS, PROVIDER, RATE_LIMIT
 from src.util import split_bytes
@@ -12,6 +11,7 @@ class Imap():
         self._imap = imaplib.IMAP4_SSL(PROVIDER)
         self._imap.login(*CREDENTIALS)
         self._imap.select()
+        print(f"{self._imap.list()}")
 
     def get_msg_data(self, uid):
         msg_bytes = self._imap.fetch(uid, "(RFC822)")[1][0][1]
@@ -26,7 +26,8 @@ class Imap():
 
     def delete_msg(self, uid):
         print(f"deleting {uid}")
-        self._imap.store(uid, "+FLAGS", "\\Deleted")
+        self._imap.store(uid, '+X-GM-LABELS', '\\Trash')
+        # self._imap.store(uid, "+FLAGS", "\\Deleted")
 
     def copy_msg(self, uid):
         print(f"copying {uid}")

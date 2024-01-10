@@ -9,7 +9,7 @@ class EmailImapAdapter(Imap):
         emails = [src.email.Email(msg, uid) for msg, uid in
                   zip(super().get_msgs(),
                       super().get_uids())]
-        return [email for email in emails if email_filter.test(email) == True]
+        return [email for email in emails if email_filter.test(email)]
 
     def delete_msg(self, email):
         super().delete_msg(bytes(str(email.uid), 'ascii'))
