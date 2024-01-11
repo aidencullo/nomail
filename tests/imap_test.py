@@ -3,7 +3,6 @@ import pickle
 
 import pytest
 from src.imap import Imap
-from src.env import RATE_LIMIT
 
 
 @pytest.fixture(name="imap_mock")
@@ -69,7 +68,7 @@ class TestImap:
         # Assert
         assert result == nones
 
-    def test_delete_msgs(self, imap_mock):
+    def test_delete_msg(self, imap_mock):
 
         # Arrange
         imap_mock._imap.store = Mock()
@@ -79,9 +78,10 @@ class TestImap:
         imap_mock.delete_msg(uid)
 
         # Assert
-        imap_mock._imap.store.assert_called_with(uid, "+FLAGS", "\\Deleted")
+        imap_mock._imap.store.assert_called_with(
+            uid, '+X-GM-LABELS', '\\Trash')
 
-    def test_copy_msgs(self, imap_mock):
+    def test_copy_msg(self, imap_mock):
 
         # Arrange
         imap_mock._imap.copy = Mock()

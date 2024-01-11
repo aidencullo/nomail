@@ -1,20 +1,20 @@
-import pytest
 from unittest.mock import Mock, patch
 
 from src.session import Session
 
 
-@pytest.fixture(name='session')
-def fixture_session():
-    return Session()
-
-
 class TestSession:
 
-    def test_run(self, session):
-        # def run(self, action, email_filter):
-        # Act
-        action_mock = Mock
-        session.run(action_mock, Mock())
+    @patch('src.session.EmailImapAdapter.get_msgs')
+    def test_run(self, mock_email_adapter_get_msgs):
 
-        assert action_mock.called
+        # Arrange
+        session = Session()
+        mock_email_adapter_get_msgs.return_value = [None]
+        action_mock = Mock()
+
+        # Act
+        session.run(action_mock, None)
+
+        # Assert
+        assert action_mock.act.called

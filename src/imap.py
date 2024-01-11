@@ -1,7 +1,7 @@
 import email
 import imaplib
 
-from src.env import CREDENTIALS, PROVIDER, RATE_LIMIT
+from src.env import CREDENTIALS, PROVIDER
 from src.util import split_bytes
 
 
@@ -11,7 +11,6 @@ class Imap():
         self._imap = imaplib.IMAP4_SSL(PROVIDER)
         self._imap.login(*CREDENTIALS)
         self._imap.select()
-        print(f"{self._imap.list()}")
 
     def get_msg_data(self, uid):
         msg_bytes = self._imap.fetch(uid, "(RFC822)")[1][0][1]
@@ -19,16 +18,15 @@ class Imap():
 
     def get_uids(self):
         _, [uids] = self._imap.search(None, "ALL")
-        return split_bytes(uids)[:RATE_LIMIT]
+        return split_bytes(uids)
 
     def get_msgs(self):
         return [self.get_msg_data(uid) for uid in self.get_uids()]
 
     def delete_msg(self, uid):
-        print(f"deleting {uid}")
+        print(f"moving {uid} to trash")
         self._imap.store(uid, '+X-GM-LABELS', '\\Trash')
-        # self._imap.store(uid, "+FLAGS", "\\Deleted")
 
     def copy_msg(self, uid):
-        print(f"copying {uid}")
+        print(f"copying {uid} to Trabajos")
         self._imap.copy(uid, "Trabajos")

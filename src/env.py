@@ -7,7 +7,6 @@ Credentials = namedtuple('Credentials', ['username', 'password'])
 
 
 load_dotenv()
-RATE_LIMIT = int(os.getenv('RATE_LIMIT'))
 PROVIDER = os.getenv('PROVIDER')
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')

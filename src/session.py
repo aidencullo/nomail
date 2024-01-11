@@ -1,4 +1,4 @@
-from .adapter import EmailImapAdapter
+from src.adapter import EmailImapAdapter
 
 
 class Session:
@@ -9,8 +9,9 @@ class Session:
     def __del__(self):
         del self._imap
 
-    def run(self, action, email_filter):
-        emails = self._imap.get_msgs(email_filter)[:1]
+    def run(self, action, email_filter, rate_limiter=10):
+        emails = self._imap.get_msgs(email_filter)[:rate_limiter]
+        print(f"{emails}")
         for email in reversed(emails):
             action.act(email)
         print(f"{len(emails)} emails affected")
