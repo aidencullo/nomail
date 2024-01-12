@@ -23,7 +23,6 @@ def format_date(date_str):
     date_format_2 = "%a, %d %b %Y %H:%M:%S %z"
     date_format_3 = "%a, %d %b %Y %H:%M:%S"
 
-    from pytz import timezone
 
     for fmt in (date_format_1, date_format_2, date_format_3):
         try:
