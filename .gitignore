@@ -1,5 +1,6 @@
 # dirs
 __pycache__/
+venv/
 
 # misc files
 play.py
