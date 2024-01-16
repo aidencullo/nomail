@@ -1,4 +1,4 @@
-from unittest.mock import create_autospec, patch
+from unittest.mock import create_autospec, patch, Mock
 
 import pytest
 from src.action import (Action, ActionCopy, ActionDelete, ActionMove,
@@ -6,35 +6,34 @@ from src.action import (Action, ActionCopy, ActionDelete, ActionMove,
 from src.email import Email
 
 
-@patch("src.action.EmailImapAdapter.delete_msg")
-def test_delete(delete_msg_mock):
+@patch("src.action.EmailImapAdapter")
+def test_delete(adapter_mock):
 
     # Arrange
     action_delete = ActionDelete()
-    mock_email = None
 
     # Act
-    action_delete.act(mock_email)
+    action_delete.act(None)
 
     # Assert
-    delete_msg_mock.assert_called_with(mock_email)
+    adapter_mock.return_value.delete_msg.assert_called_with(None)
 
 
-@patch("src.action.EmailImapAdapter.copy_msg")
-def test_copy(copy_msg_mock):
+@patch("src.action.EmailImapAdapter")
+def test_copy(adapter_mock):
 
     # Arrange
     action_copy = ActionCopy()
-    mock_email = None
 
     # Act
-    action_copy.act(mock_email)
+    action_copy.act(None)
 
     # Assert
-    copy_msg_mock.assert_called_with(mock_email)
+    adapter_mock.return_value.copy_msg.assert_called_with(None)
 
 
-def test_print(capsys):
+@patch("src.action.EmailImapAdapter")
+def test_print(adapter_mock, capsys):
 
     # Arrange
     mock_email = create_autospec(Email)
@@ -49,20 +48,18 @@ def test_print(capsys):
     assert captured.out.strip() == str(mock_email.sender)
 
 
-@patch("src.action.EmailImapAdapter.copy_msg")
-@patch("src.action.EmailImapAdapter.delete_msg")
-def test_move(delete_msg_mock, copy_msg_mock):
+@patch("src.action.EmailImapAdapter")
+def test_move(adapter_mock):
 
     # Arrange
     action_move = ActionMove()
-    mock_email = None
 
     # Act
-    action_move.act(mock_email)
+    action_move.act(None)
 
     # Assert
-    copy_msg_mock.assert_called_with(mock_email)
-    delete_msg_mock.assert_called_with(mock_email)
+    adapter_mock.return_value.copy_msg.assert_called_with(None)
+    adapter_mock.return_value.delete_msg.assert_called_with(None)
 
 
 def test_abstract():

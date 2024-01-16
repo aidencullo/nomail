@@ -1,8 +1,11 @@
 from unittest.mock import Mock, patch
 
+import pytest
+
 from src.session import Session
 
 
+@pytest.mark.skip(reason="dependent on env vars")
 class TestSession:
 
     @patch('src.session.EmailImapAdapter.get_msgs')

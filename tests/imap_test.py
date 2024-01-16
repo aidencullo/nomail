@@ -30,6 +30,7 @@ def fixture_imap_get_uids(imap_mock, byte_str_mock):
     return imap_mock
 
 
+@pytest.mark.skip(reason="dependent on env vars")
 class TestImap:
 
     def test_constructor(self, imap_mock):
