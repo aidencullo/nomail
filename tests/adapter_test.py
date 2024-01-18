@@ -5,65 +5,45 @@ import pytest
 from src.adapter import EmailImapAdapter
 
 
-@patch("src.adapter.Imap.copy_msg")
-@patch("src.adapter.Imap.delete_msg")
-@patch("src.adapter.Imap.get_uids")
-@patch("src.adapter.Imap.get_msgs")
-@patch("src.email.Email")
 class TestAdapter:
 
-    # Arrange
-    @pytest.fixture(name="email_imap_adapter")
-    def fixture_email_imap_adapter(self):
-        return EmailImapAdapter()
+    @patch("src.adapter.EmailImapAdapter.__init__", return_value=None)
+    @patch("src.adapter.EmailImapAdapter.get_emails")
+    def test_apply(self, get_emails_mock, imap_mock):
+    
+        # Arrange
+        emails_mock = [0] * 10
+        get_emails_mock.return_value = emails_mock
+        test = Mock(return_value=True)
+        email_filter_mock = Mock(test=test)
+        adapter_mock = EmailImapAdapter()
 
-    @pytest.fixture(name="email_filter_mock")
-    def fixture_email_filter(self):
-        return Mock(test=Mock(return_value=True))
+        # Act
+        result = adapter_mock.apply(email_filter_mock)
 
-    @pytest.mark.skip(reason="dependent on env vars")
-    def test_get_msgs(self, email_mock, get_msgs_mock, get_uids_mock,
-                      delete_msg_mock, copy_msg_mock,
-                      email_imap_adapter, email_filter_mock):
+        # Assert
+        assert result == emails_mock
+
+    @patch("src.adapter.super")
+    def test_delete_msg(self, super_mock):
 
         # Arrange
-        get_uids_mock.return_value = [None]
-        get_msgs_mock.return_value = [None]
+        adapter_mock = EmailImapAdapter()
 
         # Act
-        result = email_imap_adapter.get_msgs(email_filter_mock)
+        adapter_mock.delete_msg(Mock())
 
         # Assert
-        assert len(result) == 1
-        assert get_uids_mock.called
-        assert get_msgs_mock.called
-        assert not delete_msg_mock.called
-        assert not copy_msg_mock.called
+        assert super_mock.called
 
-    @pytest.mark.skip(reason="dependent on env vars")
-    def test_delete_msg(self, email_mock, get_msgs_mock, get_uids_mock,
-                        delete_msg_mock, copy_msg_mock,
-                        email_imap_adapter, email_filter_mock):
+    @patch("src.adapter.super")
+    def test_copy_msg(self, super_mock):
+
+        # Arrange
+        adapter_mock = EmailImapAdapter()
 
         # Act
-        email_imap_adapter.delete_msg(email_mock)
+        adapter_mock.copy_msg(Mock())
 
         # Assert
-        assert not get_uids_mock.called
-        assert not get_msgs_mock.called
-        assert delete_msg_mock.called
-        assert not copy_msg_mock.called
-
-    @pytest.mark.skip(reason="dependent on env vars")
-    def test_copy_msg(self, email_mock, get_msgs_mock, get_uids_mock,
-                      delete_msg_mock, copy_msg_mock,
-                      email_imap_adapter, email_filter_mock):
-
-        # Act
-        email_imap_adapter.copy_msg(email_mock)
-
-        # Assert
-        assert not get_uids_mock.called
-        assert not get_msgs_mock.called
-        assert not delete_msg_mock.called
-        assert copy_msg_mock.called
+        assert super_mock.called

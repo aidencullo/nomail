@@ -12,3 +12,4 @@ test.py
 *.csv
 *.html
 /tests/test_test.py
+/.coverage
