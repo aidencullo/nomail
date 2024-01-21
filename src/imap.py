@@ -12,21 +12,24 @@ class Imap():
         self._imap.login(*CREDENTIALS)
         self._imap.select()
 
+    def get_msgs(self):
+        print(f'{self.get_uids}')
+        return [self.get_msg_data(uid) for uid in self.get_uids()]        
+        
     def get_msg_data(self, uid):
-        msg_bytes = self._imap.fetch(uid, "(RFC822)")[1][0][1]
-        return email.message_from_bytes(msg_bytes)
+        return email.message_from_bytes(self.fetch_msg_from_server(uid))
+
+    def fetch_msg_from_server(self, uid):
+        return self._imap.fetch(uid, "(RFC822)")[1][0][1]
 
     def get_uids(self):
-        _, [uids] = self._imap.search(None, "ALL")
-        return split_bytes(uids)
+        return split_bytes(self.fetch_uids_from_server())
 
-    def get_msgs(self):
-        return [self.get_msg_data(uid) for uid in self.get_uids()]
-
+    def fetch_uids_from_server(self):
+        return self._imap.search(None, "ALL")[1][0]
+    
     def delete_msg(self, uid):
-        print(f"moving {uid} to trash")
         self._imap.store(uid, '+X-GM-LABELS', '\\Trash')
 
     def copy_msg(self, uid):
-        print(f"copying {uid} to Trabajos")
         self._imap.copy(uid, "Trabajos")

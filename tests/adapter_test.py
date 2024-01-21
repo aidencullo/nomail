@@ -1,6 +1,5 @@
 from unittest.mock import Mock, patch
 
-import pytest
 
 from src.adapter import EmailImapAdapter
 
