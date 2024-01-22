@@ -13,7 +13,6 @@ class Imap():
         self._imap.select()
 
     def get_msgs(self):
-        print(f'{self.get_uids}')
         return [self.get_msg_data(uid) for uid in self.get_uids()]        
         
     def get_msg_data(self, uid):
