@@ -1,40 +1,43 @@
 from unittest.mock import patch, Mock
 
-import pytest
 import numpy as np
 from src.imap import Imap
 
 
 MOCK_ARRAY_SIZE = 10
-MOCK_ARRAY = 10 * [None]
+MOCK_ARRAY_ITEM = None
+MOCK_ARRAY = MOCK_ARRAY_SIZE * [MOCK_ARRAY_ITEM]
 MOCK_MSG = ""
+MOCK_UID = 10
 
 class TestImap:
 
 
-    @patch("src.imap.imaplib", autospec=True)
-    @patch("src.imap.Imap.get_uids", return_value=(MOCK_ARRAY), autospec=True)
-    @patch("src.imap.Imap.get_msg_data", return_value=None, autospec=True)
-    def test_get_msgs(self, _1, _2, _3):
+    @patch("src.imap.imaplib", Mock())
+    @patch("src.imap.Imap.get_uids", autospec=True)
+    @patch("src.imap.Imap.get_msg_data", autospec=True)
+    def test_get_msgs(self, mock_get_msg_data, mock_get_uids):
 
         # Arrange
         imap_mock = Imap()
-
+        mock_get_uids.return_value = MOCK_ARRAY
+        mock_get_msg_data.return_value = MOCK_ARRAY_ITEM
+        
         # Act
         RESULT = imap_mock.get_msgs()
 
         # Assert
-        assert RESULT == [None] * MOCK_ARRAY_SIZE
+        assert RESULT == MOCK_ARRAY
 
 
-    @patch("src.imap.imaplib", autospec=True)
-    @patch("src.imap.email.message_from_bytes", return_value=MOCK_MSG, autospec=True)
+    @patch("src.imap.imaplib", Mock())
+    @patch("src.imap.email.message_from_bytes", autospec=True)
     @patch("src.imap.Imap.fetch_msg_from_server", autospec=True)
-    def test_get_msg_data(self, _1, _2, _3):
+    def test_get_msg_data(self, mock_fetch_msg_from_server, mock_message_from_bytes):
 
         # Arrange
         imap_mock = Imap()
-        MOCK_UID = 10
+        mock_message_from_bytes.return_value=MOCK_MSG
 
         # Act
         RESULT = imap_mock.get_msg_data(MOCK_UID)
@@ -43,14 +46,12 @@ class TestImap:
         assert RESULT == MOCK_MSG
 
 
-    @patch("src.imap.imaplib", autospec=True)
-    def test_fetch_msg_from_server(self, _):
+    @patch("src.imap.imaplib", Mock())
+    def test_fetch_msg_from_server(self):
 
         # Arrange
-        MOCK_SERVER_MSG = 100
-        MOCK_UID = 100
         mock_server_response = np.zeros((2, 2, 2))
-        mock_server_response.fill(MOCK_SERVER_MSG)
+        mock_server_response.fill(MOCK_UID)
         
         imap_mock = Imap()
         imap_mock._imap = Mock(fetch=Mock(return_value=mock_server_response))
@@ -59,4 +60,4 @@ class TestImap:
         RESULT = imap_mock.fetch_msg_from_server(MOCK_UID)
 
         # # Assert
-        assert RESULT == MOCK_SERVER_MSG
+        assert RESULT == MOCK_UID
