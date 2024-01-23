@@ -2,6 +2,7 @@ from datetime import datetime
 from unittest.mock import Mock, patch
 
 import pytest
+
 from src.output import create_file_name, format_data, print_file
 
 

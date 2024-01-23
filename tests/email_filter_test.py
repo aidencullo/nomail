@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 
 import pytest
+
 from src.email_filter import EmailFilterAll, EmailFilterList, EmailFilterNone
 
 

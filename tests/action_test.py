@@ -1,6 +1,7 @@
 from unittest.mock import create_autospec, patch
 
 import pytest
+
 from src.action import (Action, ActionCopy, ActionDelete, ActionMove,
                         ActionPrint)
 from src.email import Email
