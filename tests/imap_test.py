@@ -118,7 +118,7 @@ class TestImap:
         RESULT = imap_mock.delete_msg(MOCK_UID)
 
         # Assert
-        assert RESULT == None
+        assert RESULT is None
         imap_mock._imap.store.assert_called_once()
 
     @patch("src.imap.imaplib", Mock())
@@ -131,5 +131,5 @@ class TestImap:
         RESULT = imap_mock.copy_msg(MOCK_UID)
 
         # Assert
-        assert RESULT == None
+        assert RESULT is None
         imap_mock._imap.copy.assert_called_once()
