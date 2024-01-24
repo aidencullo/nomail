@@ -13,15 +13,17 @@ MOCK_MSG = ""
 MOCK_UID = 10
 
 
-@pytest.fixture(name="mock_server_response")
-def fixture_service_response():
+@pytest.fixture(name="mock_server_fetch_response")
+def fixture_service_fetch_response():
     mock = np.zeros((2, 2, 2))
     mock.fill(MOCK_UID)
     return mock
 
-@pytest.fixture(name="mock__imap")
-def fixture__imap(mock_server_response):
-    return Mock(return_value=mock_server_response)
+@pytest.fixture(name="mock_server_search_response")
+def fixture_service_search_response():
+    mock = np.zeros((2, 2))
+    mock.fill(MOCK_UID)
+    return mock
 
 
 class TestImap:
@@ -61,11 +63,11 @@ class TestImap:
 
 
     @patch("src.imap.imaplib", Mock())
-    def test_fetch_msg_from_server(self, mock__imap):
+    def test_fetch_msg_from_server(self, mock_server_fetch_response):
 
         # Arrange
         imap_mock = Imap()
-        imap_mock._imap.fetch = mock__imap
+        imap_mock._imap.fetch.return_value = mock_server_fetch_response
 
         # Act
         RESULT = imap_mock.fetch_msg_from_server(MOCK_UID)
@@ -75,12 +77,14 @@ class TestImap:
 
 
     @patch("src.imap.imaplib", Mock())
-    @patch("src.imap.split_bytes", return_value=MOCK_ARRAY, autospec=True)
-    @patch("src.imap.Imap.fetch_uids_from_server", return_value=MOCK_BYTE_ARRAY ,autospec=True)
+    @patch("src.imap.split_bytes", autospec=True)
+    @patch("src.imap.Imap.fetch_uids_from_server", autospec=True)
     def test_get_uids(self, mock_fetch_uids_from_server, mock_split_bytes):
 
         # Arrange
         imap_mock = Imap()
+        mock_fetch_uids_from_server.return_value = MOCK_BYTE_ARRAY
+        mock_split_bytes.return_value = MOCK_ARRAY
 
         # Act
         RESULT = imap_mock.get_uids()
@@ -89,3 +93,43 @@ class TestImap:
         assert RESULT == MOCK_ARRAY
         mock_split_bytes.assert_called_once_with(MOCK_BYTE_ARRAY)
         mock_fetch_uids_from_server.assert_called_once()
+
+    @patch("src.imap.imaplib", Mock())
+    def test_fetch_uids_from_server(self, mock_server_search_response):
+
+        # Arrange
+        imap_mock = Imap()
+        imap_mock._imap.search.return_value = mock_server_search_response
+
+        # Act
+        RESULT = imap_mock.fetch_uids_from_server()
+
+        # Assert
+        assert RESULT == MOCK_UID
+        imap_mock._imap.search.assert_called_once()
+
+    @patch("src.imap.imaplib", Mock())
+    def test_delete_msg(self):
+
+        # Arrange
+        imap_mock = Imap()
+
+        # Act
+        RESULT = imap_mock.delete_msg(MOCK_UID)
+
+        # Assert
+        assert RESULT == None
+        imap_mock._imap.store.assert_called_once()
+
+    @patch("src.imap.imaplib", Mock())
+    def test_copy_msg(self):
+
+        # Arrange
+        imap_mock = Imap()
+
+        # Act
+        RESULT = imap_mock.copy_msg(MOCK_UID)
+
+        # Assert
+        assert RESULT == None
+        imap_mock._imap.copy.assert_called_once()
