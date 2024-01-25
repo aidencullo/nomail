@@ -8,7 +8,7 @@ class TestAdapter:
     @patch("src.adapter.EmailImapAdapter.__init__", return_value=None)
     @patch("src.adapter.EmailImapAdapter.get_emails")
     def test_apply(self, get_emails_mock, imap_mock):
-    
+
         # Arrange
         emails_mock = [0] * 10
         get_emails_mock.return_value = emails_mock

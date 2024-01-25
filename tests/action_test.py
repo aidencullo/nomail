@@ -1,4 +1,4 @@
-from unittest.mock import create_autospec, patch
+from unittest.mock import create_autospec, patch, Mock
 
 import pytest
 
@@ -33,8 +33,8 @@ def test_copy(adapter_mock):
     adapter_mock.return_value.copy_msg.assert_called_with(None)
 
 
-@patch("src.action.EmailImapAdapter")
-def test_print(adapter_mock, capsys):
+@patch("src.action.EmailImapAdapter", Mock())
+def test_print(capsys):
 
     # Arrange
     mock_email = create_autospec(Email)
