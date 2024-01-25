@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import pendulum
 import pytest
 from unittest.mock import patch
 # from unittest.mock import Mock
