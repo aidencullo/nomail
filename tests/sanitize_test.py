@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from src.sanitize import format_date, format_email, format_subject, format_uid
 
@@ -20,7 +20,7 @@ class TestSanitize:
 
         # Arrange
         raw_date = 'Wed, 20 Dec 2023 23:53:03 +0000 (UTC)'
-        sanitized_date = datetime(2023, 12, 20, 18, 53, 3)
+        sanitized_date = datetime.datetime(2023, 12, 20, 23, 53, 3, tzinfo=datetime.timezone.utc)
 
         # Act
         result = format_date(raw_date)

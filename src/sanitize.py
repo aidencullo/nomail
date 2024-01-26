@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 from email.header import decode_header
 
+import pytz
 
 def format_email(raw_email):
     if raw_email is None:
@@ -27,8 +28,6 @@ def format_date(date_str):
     for fmt in (date_format_1, date_format_2, date_format_3):
         try:
             dt = datetime.strptime(date_str, fmt)
-            dt = dt.astimezone()
-            dt = dt.replace(tzinfo=None)
             return dt
         except ValueError:
             pass
