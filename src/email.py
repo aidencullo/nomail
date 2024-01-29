@@ -3,7 +3,6 @@ from src.descriptor import Descriptor
 
 
 class Email:
-    """Hold email details and data"""
 
     uid = Descriptor()
 

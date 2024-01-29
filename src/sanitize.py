@@ -2,7 +2,6 @@ import re
 from datetime import datetime
 from email.header import decode_header
 
-import pytz
 
 def format_email(raw_email):
     if raw_email is None:
@@ -37,10 +36,12 @@ def format_date(date_str):
 def format_subject(subject_str):
     subject = decode_header(subject_str)
     text_fragments = []
-    for data, data_type in subject:
+    for data, _ in subject:
         try:
             text_fragments.append(data.decode())
         except (UnicodeDecodeError, AttributeError):
+            if type(data) is bytes:
+                data = data.decode('unicode_escape')
             text_fragments.append(data)
     subject = ' '.join(text_fragments)
     return subject

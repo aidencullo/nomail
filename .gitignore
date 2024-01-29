@@ -13,3 +13,4 @@ test.py
 *.html
 /tests/test_test.py
 /.coverage
+/.venv/
