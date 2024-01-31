@@ -25,5 +25,5 @@ class TestSession:
         session.run(mock_action, mock_email_filter)
 
         # Assert
-        mock_apply.assert_called_once_with(mock_email_filter)
+        mock_apply.assert_called_once_with(mock_email_filter, 10)
         mock_action.act.assert_called()

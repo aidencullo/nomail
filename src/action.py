@@ -4,7 +4,6 @@ from src.adapter import EmailImapAdapter
 
 
 class Action(ABC):
-    """Action take on an email"""
 
     def __init__(self):
         self._imap = EmailImapAdapter()
@@ -15,29 +14,24 @@ class Action(ABC):
 
 
 class ActionDelete(Action):
-    """Delete email"""
 
     def act(self, email):
-        print(f'{email}')
         self._imap.delete_msg(email)
 
 
 class ActionCopy(Action):
-    """Copy email"""
 
     def act(self, email):
         self._imap.copy_msg(email)
 
 
 class ActionPrint(Action):
-    """Print email"""
 
     def act(self, email):
         print(email.sender)
 
 
 class ActionMove(Action):
-    """Move email"""
 
     def act(self, email):
         self._imap.copy_msg(email)
@@ -45,7 +39,6 @@ class ActionMove(Action):
 
 
 class ActionNone(Action):
-    """Null action"""
 
     def act(self, email):
         pass

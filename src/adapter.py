@@ -7,8 +7,8 @@ class EmailImapAdapter(Imap):
     def __init__(self):
         super().__init__()
 
-    def apply(self, email_filter):
-        return [email for email in self.get_emails() if
+    def apply(self, email_filter, rate_limit=1000):
+        return [email for email in self.get_emails()[:rate_limit] if
                 email_filter.test(email)]
 
     def get_emails(self):
