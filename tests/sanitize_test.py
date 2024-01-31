@@ -26,14 +26,14 @@ class TestSanitize:
         ('Tue, 30 Jan 2024 14:57:41 -0800', datetime.fromisoformat('2024-01-30 14:57:41-08:00')),
         ('Wed, 31 Jan 2024 01:34:44 +0000', datetime.fromisoformat('2024-01-31 01:34:44+00:00')),
         ('Wed, 31 Jan 2024 03:04:13 +0000', datetime.fromisoformat('2024-01-31 03:04:13+00:00')),
-        ('Wed, 31 Jan 2024 10:08:50 +0000', datetime.fromisoformat('2024-01-31 10:08:50+00:00')),
+        ('Wed, 31 Jan 2024 10:08:50 +0000 (UTC)', datetime.fromisoformat('2024-01-31 10:08:50+00:00')),
         ('Wed, 31 Jan 2024 12:19:20 +0000', datetime.fromisoformat('2024-01-31 12:19:20+00:00')),
-        ('Wed, 31 Jan 2024 13:11:41 +0000', datetime.fromisoformat('2024-01-31 13:11:41+00:00')),
+        ('Wed, 31 Jan 2024 13:11:41 +0000 (UTC)', datetime.fromisoformat('2024-01-31 13:11:41+00:00')),
         ('Wed, 31 Jan 2024 14:33:55 +0000', datetime.fromisoformat('2024-01-31 14:33:55+00:00')),
-        ('Wed, 31 Jan 2024 18:19:36 +0000', datetime.fromisoformat('2024-01-31 18:19:36+00:00')),
-        ('Wed, 31 Jan 2024 20:38:12 +0000', datetime.fromisoformat('2024-01-31 20:38:12+00:00')),
+        ('Wed, 31 Jan 2024 18:19:36 +0000 (UTC)', datetime.fromisoformat('2024-01-31 18:19:36+00:00')),
+        ('Wed, 31 Jan 2024 20:38:12 +0000 (UTC)', datetime.fromisoformat('2024-01-31 20:38:12+00:00')),
         ('Wed, 31 Jan 2024 21:10:02 +0000', datetime.fromisoformat('2024-01-31 21:10:02+00:00')),
-        ('Wed, 31 Jan 2024 21:25:15 +0000', datetime.fromisoformat('2024-01-31 21:25:15+00:00')),
+        ('Wed, 31 Jan 2024 21:25:15 +0000 (UTC)', datetime.fromisoformat('2024-01-31 21:25:15+00:00')),
         ('31 Jan 2024 13:49:22 +0000', datetime.fromisoformat('2024-01-31 13:49:22+00:00')),
     ]
 
@@ -57,7 +57,7 @@ class TestSanitize:
         (100, 100),
         (199999, 199999),
     ]
- 
+    
     @pytest.mark.parametrize(
         ('email', 'expected'), email_test_cases
     )

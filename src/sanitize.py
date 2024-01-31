@@ -1,5 +1,5 @@
+from dateutil import parser
 import re
-from datetime import datetime
 from email.header import decode_header
 
 
@@ -14,23 +14,9 @@ def format_email(raw_email):
 
 
 def format_date(date_str):
-    date_str = re.sub('\(.*\)', "", date_str)
-    date_str = re.sub('GMT', "", date_str)
-    date_str = re.sub('UTC', "", date_str)
-    date_str = date_str.strip()
-
-    date_format_1 = "%d %b %Y %H:%M:%S %z"
-    date_format_2 = "%a, %d %b %Y %H:%M:%S %z"
-    date_format_3 = "%a, %d %b %Y %H:%M:%S"
-
-
-    for fmt in (date_format_1, date_format_2, date_format_3):
-        try:
-            dt = datetime.strptime(date_str, fmt)
-            return dt
-        except ValueError:
-            pass
-    raise ValueError('no valid date format found')
+    parser.parse(date_str)
+    # print(f'(\'{date_str}\',\'{date_datetime}\'),')
+    return parser.parse(date_str)
 
 
 def format_subject(subject_str):
@@ -40,7 +26,7 @@ def format_subject(subject_str):
         try:
             text_fragments.append(data.decode())
         except (UnicodeDecodeError, AttributeError):
-            if type(data) is bytes:
+            if isinstance(data, bytes):
                 data = data.decode('unicode_escape')
             text_fragments.append(data)
     subject = ' '.join(text_fragments)
