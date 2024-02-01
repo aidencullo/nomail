@@ -1,10 +1,12 @@
 from datetime import datetime
+from unittest.mock import patch
 
 import pytest
-from unittest.mock import patch
-# from unittest.mock import Mock
 
 from src.email import Email
+
+# from unittest.mock import Mock
+
 
 MOCK_UID = 1
 

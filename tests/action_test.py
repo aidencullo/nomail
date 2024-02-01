@@ -1,4 +1,4 @@
-from unittest.mock import create_autospec, patch, Mock
+from unittest.mock import Mock, create_autospec, patch
 
 import pytest
 
