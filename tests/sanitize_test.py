@@ -43,8 +43,9 @@ class TestSanitize:
         ('Time for your appointment!','Time for your appointment!'),
         ('Added today: new Permanent \'Software Developer\' Jobs | Rochester Jobs & Vacancies...','Added today: new Permanent \'Software Developer\' Jobs | Rochester Jobs & Vacancies...'),
         ('[GitHub] Your Dependabot alerts for the week of Jan 23 - Jan 30','[GitHub] Your Dependabot alerts for the week of Jan 23 - Jan 30'),
-        ('=?utf-8?B?SGVsbG8sIGdvbGRlbiBnb29kbmVzcyDinKg=?= ','Hello, golden goodness ✨  '),
-        ('=?utf-8?B?SW50ZWxsaVNlYXJjaOKEoiBBbGVydCBmb3VuZCAxMzUgbmV3IGpv?==?utf-8?B?YnMsIGJhc2VkIG9uIHlvdXIgcHJvZmlsZSA=?=','IntelliSearch™ Alert found 135 new jobs, based on your profile '),
+        ('=?utf-8?B?SGVsbG8sIGdvbGRlbiBnb29kbmVzcyDinKg=?= ','Hello, golden goodness ✨'),
+        ('=?utf-8?B?SW50ZWxsaVNlYXJjaOKEoiBBbGVydCBmb3VuZCAxMzUgbmV3IGpv?==?utf-8?B?YnMsIGJhc2VkIG9uIHlvdXIgcHJvZmlsZSA=?=','IntelliSearch™ \
+Alert found 135 new jobs, based on your profile '),
         ('Instantly get 3 free months by referring a friend','Instantly get 3 free months by referring a friend'),
         ('=?utf-8?Q?=C3=9ALTIMA=20PREVENTA=20PARA=20CAMDEN?=','ÚLTIMA PREVENTA PARA CAMDEN'),
         ('=?UTF-8?q?4-Unit_Vacation_Rental_in_New_York_=F0=9F=8C=87_26%_Initial_Ren?==?UTF-8?q?tal_Yield_|_Managed_by_Airbnb_Superhost?=','4-Unit Vacation Rental in New York 🌇 26% Initial Rental Yield | Managed by Airbnb Superhost'),

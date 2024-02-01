@@ -15,23 +15,22 @@ def format_email(raw_email):
 
 def format_date(date_str):
     parser.parse(date_str)
-    # print(f'(\'{date_str}\',\'{date_datetime}\'),')
     return parser.parse(date_str)
 
 
 def format_subject(subject_str):
-    subject = decode_header(subject_str)
-    text_fragments = []
-    for data, _ in subject:
-        try:
-            text_fragments.append(data.decode())
-        except (UnicodeDecodeError, AttributeError):
-            if isinstance(data, bytes):
-                data = data.decode('unicode_escape')
-            text_fragments.append(data)
-    subject = ' '.join(text_fragments)
+    subject = decode_header(subject_str)[0][0]
+    if isinstance(subject, bytes):
+        subject = decode_bytes(subject)
     return subject
 
 
+def decode_bytes(subject):
+    try:
+        return subject.decode()
+    except UnicodeDecodeError:
+        return subject.decode('unicode_escape')
+
+    
 def format_uid(uid_str):
     return int(uid_str)
