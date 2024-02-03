@@ -1,17 +1,11 @@
 from datetime import datetime
-from pathlib import Path
+import re
 
 import pandas as pd
 
 
 def create_file_name():
-    date = datetime.today()
-    file_dir_array = ['summaries', date.year, date.month, date.day]
-    file_dir = '/'.join(str(x) for x in file_dir_array)
-    file_name_array = [date.time(), '.html']
-    file_name = '/'.join((file_dir, ''.join(str(x) for x in file_name_array)))
-    Path(file_dir).mkdir(parents=True, exist_ok=True)
-    return file_name
+    return re.sub('[-, ]','/', str(datetime.today())) + '.html'
 
 
 def format_data(raw_data):

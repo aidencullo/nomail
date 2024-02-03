@@ -19,23 +19,23 @@ def fixture_raw_unit():
 def fixture_raw_data(raw_unit_mock):
     return [raw_unit_mock]
 
-
 class TestOutput:
 
+    @pytest.mark.parametrize('datetime_mock, expected', (
+        (datetime(2015, 1, 1, 12, 30, 59, 0), '2015/01/01/12:30:59.html'),
+    ),
+                             )
     @patch('src.output.datetime')
-    def test_create_file_name(self, datetime_mock):
+    def test_create_file_name(self, datetime_type_mock, datetime_mock, expected):
 
         # Arrange
-        datetime_mock.today = Mock(return_value=datetime.today())
-        today = datetime_mock.today()
+        datetime_type_mock.today = Mock(return_value=datetime_mock)
 
         # Act
-        result_file_name = create_file_name()
+        file_name = create_file_name()
 
         # Assert
-        assert str(today.year) in result_file_name
-        assert str(today.day) in result_file_name
-        assert str(today.microsecond) in result_file_name
+        assert file_name == expected
 
     def test_format_data(self, raw_data_mock):
 
