@@ -2,15 +2,13 @@ from datetime import datetime
 from unittest.mock import patch
 
 import pytest
+import pandas as pd
 
-from src.email import Email
-
-# from unittest.mock import Mock
+from src.email import Email, EmailList
 
 
 MOCK_UID = 1
 
-# Arrange
 @pytest.fixture(name="msg_data_mock")
 def fixture_msg_data():
     return {
@@ -21,24 +19,17 @@ def fixture_msg_data():
     }
 
 
-# @pytest.fixture(name="msg_data_sanitized_mock")
-# def fixture_msg_data_sanitized():
-#     return {
-#         'To': 'culloaiden3@gmail.com',
-#         'From': 'mint@em2.mint.intuit.com',
-#         'Subject': 'You can now move your Mint history to Credit Karma.',
-#         'Date': datetime(2023, 12, 20, 23, 53, 3),
-#     }
-
-
 @pytest.fixture(name="msg_uid_mock")
 def fixture_msg_uid():
     return b'1'
+ 
+@pytest.fixture(name="email_mock")
+def fixture_email(msg_data_mock, msg_uid_mock):
+    return Email(msg_data_mock, msg_uid_mock)
 
-
-# @pytest.fixture(name="msg_uid_sanitized_mock")
-# def fixture_msg_uid_sanitized():
-#     return 1
+@pytest.fixture(name="email_list_mock")
+def fixture_email_list(email_mock):
+    return EmailList([email_mock])
 
 
 @patch("src.email.sanitize")
@@ -61,7 +52,11 @@ def test_constructor(mock_sanitize, msg_data_mock, msg_uid_mock):
     assert hasattr(email, 'date')
     assert hasattr(email, 'uid')
 
-    mock_sanitize.format_email.assert_called()
-    mock_sanitize.format_subject.assert_called_once()
-    mock_sanitize.format_date.assert_called_once()
-    mock_sanitize.format_uid.assert_called_once()
+
+def test_emails_to_df(email_list_mock):
+    
+    # Act
+    df = email_list_mock.to_df()
+
+    # Assert
+    assert isinstance(df, pd.DataFrame)

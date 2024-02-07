@@ -5,7 +5,11 @@ from dateutil import parser
 
 
 def format_email(raw_email):
-    return re.split('<|>', raw_email)[1]
+    if not raw_email:
+        return None
+    if '<' in raw_email:
+        return re.split('<|>', raw_email)[1]
+    return raw_email
 
 
 def format_date(date_str):

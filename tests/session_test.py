@@ -13,7 +13,7 @@ class TestSession:
 
     @patch('src.action.Action', autospec=True)
     @patch('src.email_filter.EmailFilter', autospec=True)
-    @patch('src.session.EmailImapAdapter', autospec=True)
+    @patch('src.session.adapter.EmailImapAdapter', autospec=True)
     def test_run(self, mock_email_imap_adapter, mock_email_filter, mock_action, mock_emails):
 
         # Arrange

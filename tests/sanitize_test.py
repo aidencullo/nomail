@@ -20,6 +20,7 @@ class TestSanitize:
         ('"culloaiden3@gmail.com" <culloaiden3@gmail.com>','culloaiden3@gmail.com'),
         ('nki.sm.PNCLab <pnclab@nki.rfmh.org>','pnclab@nki.rfmh.org'),
         ('Joe Biden <info@contact.joebiden.com>','info@contact.joebiden.com'),
+        ('culloaiden3@gmail.com','culloaiden3@gmail.com'),
     ]
 
     date_test_cases = [        
