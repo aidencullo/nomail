@@ -6,6 +6,12 @@ import pandas as pd
 
 from src import output
 
+
+@pytest.fixture(name="df_mock")
+def fixture_df():
+    return pd.DataFrame({'col1': [1, 2], 'col2': [4, 3]})
+
+
 class TestOutput:
 
     @pytest.mark.parametrize('datetime_mock, expected', (
@@ -28,20 +34,27 @@ class TestOutput:
         assert file_name == expected
 
     @patch('src.output.generate_file_name')
-    def test_write_df_to_file(self, mock_generate_file_name):
+    def test_write_df_to_file(self, mock_generate_file_name, df_mock):
 
         # Arrange
-        df = pd.DataFrame({'col1': [1, 2], 'col2': [4, 3]})
         mock_file_name = "sample.csv"
         mock_generate_file_name.return_value = mock_file_name
 
         # Act
-        output.write_df_to_file(df)
+        output.write_df_to_file(df_mock)
 
         # Assert
-        assert df.equals(pd.read_csv(mock_file_name))
+        assert df_mock.equals(pd.read_csv(mock_file_name))
 
 
-    # @patch('src.output.write_df_to_file', autospec=True)
-    def test_write_emails_to_file(self):
-        pass
+    @patch('src.output.write_df_to_file')
+    def test_write_emails_to_file(self, write_df_mock, df_mock):
+        # Arrange
+        email_list_mock = Mock()
+        email_list_mock.to_df = Mock(return_value=df_mock)
+
+        # Act
+        output.write_emails_to_file(email_list_mock)
+
+        # Assert
+        write_df_mock.assert_called_with(df_mock)
