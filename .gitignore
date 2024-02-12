@@ -14,3 +14,4 @@ test.py
 /tests/test_test.py
 /.coverage
 /.venv/
+/nomail.py

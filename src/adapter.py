@@ -1,8 +1,7 @@
-from src.email import Email
-from src.imap import Imap
+from src import (email, imap)
 
 
-class EmailImapAdapter(Imap):
+class EmailImapAdapter(imap.Imap):
 
     def __init__(self):
         super().__init__()
@@ -11,9 +10,9 @@ class EmailImapAdapter(Imap):
         return [email for email in self.get_emails()[:rate_limit] if
                 email_filter.test(email)]
 
-    def get_emails(self):
-        return [Email(msg, uid) for msg, uid in zip(self.get_msgs(),
-                                                    self.get_uids())]
+    def get_emails(self) -> email.EmailList:
+        return email.EmailList([email.Email(msg, uid) for msg, uid in
+                                zip(self.get_msgs(), self.get_uids())])
 
     def get_msgs(self):
         return super().get_msgs()
