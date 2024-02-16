@@ -22,7 +22,7 @@ class Email:
         return " \n".join([str(item) for item in self.__dict__.values()])
 
     def __iter__(self):
-        yield self.subject
+        yield self.subject, self.sender
 
 
 
@@ -39,6 +39,9 @@ class EmailList:
 
     def __getitem__(self, index):
         return self.emails[index]
+
+    def __len__(self):
+        return len(self.emails)
 
     def to_df(self):
         return pd.DataFrame(self.emails)

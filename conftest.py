@@ -12,6 +12,11 @@ def fixture_subject():
     return 'You can now move your Mint history to Credit Karma.'
 
 
+@pytest.fixture(name="sender_mock")
+def fixture_sender():
+    return 'mint@em2.mint.intuit.com'
+
+
 @pytest.fixture(name="msg_data_mock")
 def fixture_msg_data(subject_mock):
     return {

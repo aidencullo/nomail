@@ -24,6 +24,3 @@ class EmailImapAdapter(imap.Imap):
 
     def copy_msg(self, user_email):
         super().copy_msg(bytes(str(user_email.uid), 'ascii'))
-
-    def copy_msg(self, user_email):
-        super().copy_msg(bytes(str(user_email.uid), 'ascii'))

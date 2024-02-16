@@ -27,10 +27,10 @@ def test_constructor(mock_sanitize, msg_data_mock, msg_uid_mock):
     assert hasattr(email, 'uid')
 
 
-def test_emails_to_df(email_list_mock, subject_mock):
+def test_emails_to_df(email_list_mock, subject_mock, sender_mock):
 
     # Act
     df = email_list_mock.to_df()
 
     # Assert
-    assert df.iloc[1, 0] == subject_mock
+    assert df.iloc[1, 0] == (subject_mock, sender_mock)
