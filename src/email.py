@@ -18,7 +18,7 @@ class Email:
         self.date = sanitize.format_date(msg_data['Date'])
         self.uid = sanitize.format_uid(uid)
 
-    def __str__(self):
+    def __repr__(self):
         return " \n".join([str(item) for item in self.__dict__.values()])
 
     def __iter__(self):
