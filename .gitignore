@@ -1,17 +1,19 @@
-# dirs
+# auto-generated
 __pycache__/
 venv/
-
-# misc files
-play.py
-main.py
-test.py
-.env
-
-# output files
-*.csv
-*.html
-/tests/test_test.py
 /.coverage
 /.venv/
-/nomail.py
+
+# misc
+play.py
+test.py
+nomail.py
+.env
+
+# output
+*.csv
+*.html
+*.bin
+
+# data
+/data/

@@ -1,5 +1,13 @@
+from pathlib import Path
+
 import pytest
+from unittest.mock import patch, Mock
+
 from src.email import Email, EmailList
+
+@pytest.fixture(name='TEST_DATA_DIR')
+def fixture_data_path():
+    return Path(__file__).resolve().parent / 'data'
 
 
 @pytest.fixture(name="msg_uid_mock")
@@ -35,3 +43,32 @@ def fixture_email(msg_data_mock, msg_uid_mock):
 @pytest.fixture(name="email_list_mock")
 def fixture_email_list(email_mock):
     return EmailList([email_mock] * 2)
+
+
+@pytest.fixture(name="email1_mock")
+def fixture_msg_data():
+    data = {
+        'To': 'culloaiden3@gmail.com',
+        'From': '"Reed.co.uk" <no-reply@jobs.reed.co.uk>',
+        'Subject': "Added today: new Permanent 'Software Developer' Jobs | Rochester Jobs & Vacancies...",
+        'Date': 'Wed, 31 Jan 2024 03:04:13 +0000',
+    }
+    return Email(data, b'1')
+
+
+@pytest.fixture(name="email_binary")
+def fixture_binary(TEST_DATA_DIR):
+    file_name = TEST_DATA_DIR / 'email.bin'
+    with open(file_name, 'rb') as f:
+        contents = f.read()
+    return contents
+
+
+@pytest.fixture
+def fixture_imaplib(email_binary):
+    # Arrange
+    test_mock = Mock()
+    test_mock.search = Mock(return_value=[None, [b'1']])
+
+    test_mock.fetch = Mock(return_value=[None, [[None, email_binary]]])
+    return test_mock

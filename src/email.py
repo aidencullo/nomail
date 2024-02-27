@@ -9,7 +9,7 @@ from src import descriptor
 
 class Email:
 
-    uid = descriptor.Descriptor()
+    # uid = descriptor.Descriptor()
 
     def __init__(self, msg_data, uid):
         self.recipient = sanitize.format_email(msg_data['To'])
@@ -24,6 +24,10 @@ class Email:
     def __iter__(self):
         yield self.subject, self.sender
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.__dict__ == other.__dict__
 
 
 @dataclass
