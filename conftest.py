@@ -45,8 +45,8 @@ def fixture_email_list(email_mock):
     return EmailList([email_mock] * 2)
 
 
-@pytest.fixture(name="email1_mock")
-def fixture_msg_data():
+@pytest.fixture(name="stub_email")
+def fixture_stub_email():
     data = {
         'To': 'culloaiden3@gmail.com',
         'From': '"Reed.co.uk" <no-reply@jobs.reed.co.uk>',
@@ -64,11 +64,9 @@ def fixture_binary(TEST_DATA_DIR):
     return contents
 
 
-@pytest.fixture
+@pytest.fixture(name="imaplib_mock")
 def fixture_imaplib(email_binary):
-    # Arrange
-    test_mock = Mock()
-    test_mock.search = Mock(return_value=[None, [b'1']])
-
-    test_mock.fetch = Mock(return_value=[None, [[None, email_binary]]])
-    return test_mock
+    imaplib_mock = Mock()
+    imaplib_mock.search = Mock(return_value=[None, [b'1']])
+    imaplib_mock.fetch = Mock(return_value=[None, [[None, email_binary]]])
+    return imaplib_mock

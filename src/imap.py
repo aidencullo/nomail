@@ -25,7 +25,7 @@ class Imap():
         return split_bytes(self.fetch_uids_from_server())
 
     def fetch_uids_from_server(self):
-        return self._imap.search(None, "ALL")[1][0][:1]
+        return self._imap.search(None, "ALL")[1][0]
     
     def delete_msg(self, uid):
         self._imap.store(uid, '+X-GM-LABELS', '\\Trash')
