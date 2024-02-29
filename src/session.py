@@ -1,23 +1,16 @@
 from typing import Optional
 
-from src import (adapter, output, email, action, email_filter)
+from src.adapter import EmailImapAdapter
+from src.email_filter import EmailFilter
+from src.email import EmailList
+from src.action import Action
 
+def run(action: Action, filter: EmailFilter, rate_limit: int=10) -> EmailList:
+    _imap: EmailImapAdapter = EmailImapAdapter()
+    emails = _imap.apply(filter, rate_limit=rate_limit)
+    act(emails, action)
+    return emails
 
-class Session:
-
-    def __init__(self) -> None:
-        self._imap: adapter.EmailImapAdapter = adapter.EmailImapAdapter()
-
-    def __del__(self):
-        del self._imap
-
-    def run(self, user_action: action.Action,
-            user_email_filter: email_filter.EmailFilter,
-            rate_limit: Optional[int] = 10) -> email.EmailList:
-        emails = self._imap.apply(user_email_filter, rate_limit=rate_limit)
-        self.act(emails, user_action)
-        return emails
-
-    def act(self, emails, user_action):
-        for email in emails[::-1]:
-            user_action.act(email)
+def act(emails, action):
+    for email in emails[::-1]:
+        action.act(email)

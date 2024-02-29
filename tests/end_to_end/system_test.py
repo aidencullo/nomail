@@ -3,7 +3,10 @@ import imaplib
 
 import pytest
 
-from src import (action, email_filter, session, io, output)
+from src.action import ActionNone
+from src.email_filter import EmailFilterNone
+from src.session import run
+from src.io import read_csv
 
 @pytest.fixture(autouse=True)
 def no_delay(imaplib_mock):
@@ -11,16 +14,12 @@ def no_delay(imaplib_mock):
         yield
 
 
+@pytest.mark.e2e
 class TestEndToEnd:
 
-    @pytest.mark.e2e
-    def test_system(self, stub_email, email_binary, TEST_DATA_DIR):
+    def test_null_filter_single_item(self, stub_email, email_binary, TEST_DATA_DIR):
         # Act
-        gmail_session = session.Session()
-        senders = io.read_csv(TEST_DATA_DIR / 'blacklist.csv')
-        user_action = action.ActionNone()
-        user_filter = email_filter.EmailFilterNone()
-        [actual_email] = gmail_session.run(user_action, user_filter, rate_limit=1)
-
+        senders = read_csv(TEST_DATA_DIR / 'blacklist.csv')
+        [actual_email] = run(ActionNone(), EmailFilterNone(), rate_limit=1)
         # Assert
         assert actual_email == stub_email
