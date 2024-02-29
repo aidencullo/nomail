@@ -5,9 +5,9 @@ from src.email_filter import EmailFilter
 from src.email import EmailList
 from src.action import Action
 
-def run(action: Action, filter: EmailFilter, rate_limit: int=10) -> EmailList:
+def run(action: Action, filter: EmailFilter, rate_limit: int=1) -> EmailList:
     _imap: EmailImapAdapter = EmailImapAdapter()
-    emails = _imap.apply(filter, rate_limit=rate_limit)
+    emails = _imap.apply(filter, rate_limit)
     act(emails, action)
     return emails
 

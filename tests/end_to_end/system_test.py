@@ -18,8 +18,6 @@ def no_delay(imaplib_mock):
 class TestEndToEnd:
 
     def test_null_filter_single_item(self, stub_email, email_binary, TEST_DATA_DIR):
-        # Act
         senders = read_csv(TEST_DATA_DIR / 'blacklist.csv')
-        [actual_email] = run(ActionNone(), EmailFilterNone(), rate_limit=1)
-        # Assert
+        [actual_email] = run(ActionNone(), EmailFilterNone())
         assert actual_email == stub_email
