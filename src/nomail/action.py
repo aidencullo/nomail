@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.adapter import EmailImapAdapter
+from .adapter import EmailImapAdapter
 
 
 class Action(ABC):

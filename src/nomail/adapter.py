@@ -1,4 +1,4 @@
-from src import (email, imap)
+from . import (email, imap)
 
 
 class EmailImapAdapter(imap.Imap):

@@ -2,7 +2,7 @@ from datetime import datetime
 import re
 import pandas as pd
 
-from src import email
+from . import email
 
 
 def generate_file_name():

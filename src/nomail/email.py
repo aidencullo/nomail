@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
-from src import sanitize
-from src import descriptor
+from . import sanitize
+from . import descriptor
 
 
 class Email:

@@ -1,14 +1,20 @@
 import email
 import imaplib
 
-from src.env import CREDENTIALS, PROVIDER
-from src.util import split_bytes
+from .env import CREDENTIALS, PROVIDER
+from .util import split_bytes
 
 
 class Imap():
 
     def __init__(self):
-        self._imap = imaplib.IMAP4_SSL(PROVIDER)
+        try:
+            self._imap = imaplib.IMAP4_SSL(PROVIDER)
+        except ConnectionRefusedError as e:
+            raise e
+            print("couldn't connect to imap email server")
+            print("this is most likely due to incorrect credentials, check your env file")
+            return
         self._imap.login(*CREDENTIALS)
         self._imap.select()
 
@@ -26,7 +32,10 @@ class Imap():
 
     def fetch_uids_from_server(self):
         return self._imap.search(None, "ALL")[1][0]
-    
+ 
+    def fetch_noop_from_server(self) -> None:
+        print(self._imap.noop())
+   
     def delete_msg(self, uid):
         self._imap.store(uid, '+X-GM-LABELS', '\\Trash')
 
