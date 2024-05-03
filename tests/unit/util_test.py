@@ -1,4 +1,4 @@
-from src.util import split_bytes, to_int
+from nomail.util import split_bytes, to_int
 
 
 class TestUtil:

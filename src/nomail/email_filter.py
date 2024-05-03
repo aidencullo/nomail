@@ -1,33 +1,13 @@
-from abc import ABC, abstractmethod
+from typing import List
+
+from .email import Email
 
 
-class EmailFilter(ABC):
-    """Filter emails"""
-
-    @abstractmethod
-    def test(self, email):
-        pass
-
-
-class EmailFilterNone(EmailFilter):
-    """no filtering"""
-
-    def test(self, email):
-        return True
-
-
-class EmailFilterAll(EmailFilter):
-    """filter all emails"""
-
-    def test(self, email):
-        return False
-
-
-class EmailFilterList(EmailFilter):
-    """filter senders not in list"""
-
-    def __init__(self, address_list):
+class ListFilter():
+    def __init__(self, address_list: List[str] = None):
+        if address_list is None:
+            address_list = []
         self._address_list = address_list
 
-    def test(self, email):
+    def apply(self, email: Email) -> bool:
         return email.sender in self._address_list

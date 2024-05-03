@@ -8,9 +8,6 @@ from . import descriptor
 
 
 class Email:
-
-    # uid = descriptor.Descriptor()
-
     def __init__(self, msg_data, uid):
         self.recipient = sanitize.format_email(msg_data['To'])
         self.sender = sanitize.format_email(msg_data['From'])

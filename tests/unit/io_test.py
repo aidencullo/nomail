@@ -2,12 +2,12 @@ from unittest.mock import Mock, patch
 
 import numpy as np
 
-from src.io import read_csv, write_csv
+from nomail.io import read_csv, write_csv
 
 
 class TestIO:
 
-    @patch('src.io.pd.DataFrame')
+    @patch('nomail.io.pd.DataFrame')
     def test_write_csv(self, data_frame_mock):
 
         # Arrange
@@ -22,7 +22,7 @@ class TestIO:
         data_frame_mock.assert_called_with(data_mock)
         data_frame_mock.return_value.to_csv.assert_called_with(file_name_mock)
 
-    @patch('src.io.pd.read_csv')
+    @patch('nomail.io.pd.read_csv')
     def test_read_csv(self, pd_read_csv_mock):
 
         # Arrange

@@ -3,10 +3,10 @@ from unittest.mock import patch
 
 import pandas as pd
 
-from src.email import Email, EmailList
+from nomail.email import Email, EmailList
 
 
-@patch("src.email.sanitize")
+@patch("nomail.email.sanitize")
 def test_constructor(mock_sanitize, msg_data_mock, msg_uid_mock):
 
     # Arrange

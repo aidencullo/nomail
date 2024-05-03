@@ -1,6 +1,6 @@
 import pytest
 
-from src.descriptor import Descriptor
+from nomail.descriptor import Descriptor
 
 
 @pytest.fixture(name="cls_mock")

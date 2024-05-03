@@ -6,7 +6,7 @@ class EmailImapAdapter(imap.Imap):
     def __init__(self):
         super().__init__()
 
-    def apply(self, email_filter, rate_limit=1000) -> email.EmailList:
+    def apply(self, email_filter, rate_limit: int = 1) -> email.EmailList:
         return self.get_emails().limit(rate_limit).filter(email_filter)
 
     def get_emails(self) -> email.EmailList:

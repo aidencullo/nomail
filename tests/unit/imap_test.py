@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 import numpy as np
 import pytest
 
-from src.imap import Imap
+from nomail.imap import Imap
 
 MOCK_ARRAY_SIZE = 10
 MOCK_ARRAY_ITEM = 0
@@ -29,9 +29,9 @@ def fixture_service_search_response():
 class TestImap:
 
 
-    @patch("src.imap.imaplib", Mock())
-    @patch("src.imap.Imap.get_uids", autospec=True)
-    @patch("src.imap.Imap.get_msg_data", autospec=True)
+    @patch("nomail.imap.imaplib", Mock())
+    @patch("nomail.imap.Imap.get_uids", autospec=True)
+    @patch("nomail.imap.Imap.get_msg_data", autospec=True)
     def test_get_msgs(self, mock_get_msg_data, mock_get_uids):
 
         # Arrange
@@ -46,9 +46,9 @@ class TestImap:
         assert RESULT == MOCK_ARRAY
 
 
-    @patch("src.imap.imaplib", Mock())
-    @patch("src.imap.email.message_from_bytes", autospec=True)
-    @patch("src.imap.Imap.fetch_msg_from_server", autospec=True)
+    @patch("nomail.imap.imaplib", Mock())
+    @patch("nomail.imap.email.message_from_bytes", autospec=True)
+    @patch("nomail.imap.Imap.fetch_msg_from_server", autospec=True)
     def test_get_msg_data(self, mock_fetch_msg_from_server, mock_message_from_bytes):
 
         # Arrange
@@ -62,7 +62,7 @@ class TestImap:
         assert RESULT == MOCK_MSG
 
 
-    @patch("src.imap.imaplib", Mock())
+    @patch("nomail.imap.imaplib", Mock())
     def test_fetch_msg_from_server(self, mock_server_fetch_response):
 
         # Arrange
@@ -76,9 +76,9 @@ class TestImap:
         assert RESULT == MOCK_UID
 
 
-    @patch("src.imap.imaplib", Mock())
-    @patch("src.imap.split_bytes", autospec=True)
-    @patch("src.imap.Imap.fetch_uids_from_server", autospec=True)
+    @patch("nomail.imap.imaplib", Mock())
+    @patch("nomail.imap.split_bytes", autospec=True)
+    @patch("nomail.imap.Imap.fetch_uids_from_server", autospec=True)
     def test_get_uids(self, mock_fetch_uids_from_server, mock_split_bytes):
 
         # Arrange
@@ -94,7 +94,7 @@ class TestImap:
         mock_split_bytes.assert_called_once_with(MOCK_BYTE_ARRAY)
         mock_fetch_uids_from_server.assert_called_once()
 
-    @patch("src.imap.imaplib", Mock())
+    @patch("nomail.imap.imaplib", Mock())
     def test_fetch_uids_from_server(self, mock_server_search_response):
 
         # Arrange
@@ -108,7 +108,7 @@ class TestImap:
         assert RESULT == MOCK_UID
         imap_mock._imap.search.assert_called_once()
 
-    @patch("src.imap.imaplib", Mock())
+    @patch("nomail.imap.imaplib", Mock())
     def test_delete_msg(self):
 
         # Arrange
@@ -121,7 +121,7 @@ class TestImap:
         assert RESULT is None
         imap_mock._imap.store.assert_called_once()
 
-    @patch("src.imap.imaplib", Mock())
+    @patch("nomail.imap.imaplib", Mock())
     def test_copy_msg(self):
 
         # Arrange

@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from unittest.mock import patch, Mock
 
-from src.email import Email, EmailList
+from nomail.email import Email, EmailList
 
 @pytest.fixture(name='TEST_DATA_DIR')
 def fixture_data_path():

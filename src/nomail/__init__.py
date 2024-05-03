@@ -1,25 +1,36 @@
-# read version from installed package
 from importlib.metadata import version
-from . import session
+from .session import noop
 from .action import ActionNone
-from .email_filter import EmailFilterNone
+from .email_filter import ListFilter
+
 
 __version__ = version("nomail")
 
-__all__ = [
-    'filter',
-    'noop',
-]
 
-def filter():
+def filter(rate_limit: int = 1):
+    blacklist = get_blacklist()
+    emails = session.run(ActionNone(), ListFilter(blacklist), rate_limit)
+    print_summary(emails)
+
+
+def get_blacklist():
     try:
         with open('blacklist.csv') as f:
             blacklist = f.read().splitlines()
     except FileNotFoundError:
         print("blacklist.csv not found")
         blacklist = []
-    emails_processed = session.run(ActionNone(), EmailFilterNone())
-    print(f'{emails_processed} emails processed')
+    return blacklist
+        
 
-def noop():
-    session.connect()
+def print_summary(emails):
+    print(f"{len(emails)} email{plural(emails)} processed")
+
+
+def print_summary_verbose(emails):
+    print(f'{emails=} ')
+    print_summary(emails)
+
+
+def plural(emails):
+    return 's' if len(emails) != 1 else ''

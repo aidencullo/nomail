@@ -2,12 +2,12 @@ from unittest.mock import Mock, create_autospec, patch
 
 import pytest
 
-from src.action import (Action, ActionCopy, ActionDelete, ActionMove,
+from nomail.action import (Action, ActionCopy, ActionDelete, ActionMove,
                         ActionPrint)
-from src.email import Email
+from nomail.email import Email
 
 
-@patch("src.action.EmailImapAdapter")
+@patch("nomail.action.EmailImapAdapter")
 def test_delete(adapter_mock):
 
     # Arrange
@@ -20,7 +20,7 @@ def test_delete(adapter_mock):
     adapter_mock.return_value.delete_msg.assert_called_with(None)
 
 
-@patch("src.action.EmailImapAdapter")
+@patch("nomail.action.EmailImapAdapter")
 def test_copy(adapter_mock):
 
     # Arrange
@@ -33,7 +33,7 @@ def test_copy(adapter_mock):
     adapter_mock.return_value.copy_msg.assert_called_with(None)
 
 
-@patch("src.action.EmailImapAdapter", Mock())
+@patch("nomail.action.EmailImapAdapter", Mock())
 def test_print(capsys):
 
     # Arrange
@@ -49,7 +49,7 @@ def test_print(capsys):
     assert captured.out.strip() == str(mock_email.sender)
 
 
-@patch("src.action.EmailImapAdapter")
+@patch("nomail.action.EmailImapAdapter")
 def test_move(adapter_mock):
 
     # Arrange
