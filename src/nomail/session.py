@@ -1,4 +1,3 @@
-from typing import Optional
 
 from .action import Action
 from .adapter import EmailImapAdapter

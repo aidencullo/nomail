@@ -1,9 +1,8 @@
 from datetime import datetime
 from unittest.mock import patch
 
-import pandas as pd
 
-from nomail.email import Email, EmailList
+from nomail.email import Email
 
 
 @patch("nomail.email.sanitize")

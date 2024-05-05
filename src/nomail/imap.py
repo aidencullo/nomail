@@ -1,6 +1,7 @@
 import email
 import imaplib
-from typing import List, Optional
+from typing import List
+from email.message import Message
 
 from .env import CREDENTIALS, PROVIDER
 from .util import split_bytes
@@ -11,7 +12,7 @@ class Imap():
     def __init__(self):
         try:
             self._imap = imaplib.IMAP4_SSL(PROVIDER)
-        except ConnectionRefusedError as e:
+        except ConnectionRefusedError:
             print("couldn't connect to imap email server")
             print("this is most likely due to incorrect credentials, check your env file")
             return
@@ -22,16 +23,16 @@ class Imap():
         self._imap.login(*CREDENTIALS)
         self._imap.select()
 
-    def get_msgs(self) -> List[str]:
+    def get_msgs(self) -> List[Message]:
         return [self.get_msg_data(uid) for uid in self.get_uids()]
 
-    def get_msg_data(self, uid: int) -> str:
+    def get_msg_data(self, uid: bytes) -> Message:
         return email.message_from_bytes(self.fetch_msg_from_server(uid))
 
-    def fetch_msg_from_server(self, uid: int) -> bytes:
+    def fetch_msg_from_server(self, uid: bytes) -> bytes:
         return self._imap.fetch(uid, "(RFC822)")[1][0][1]
 
-    def get_uids(self) -> List[int]:
+    def get_uids(self) -> List[bytes]:
         return split_bytes(self.fetch_uids_from_server())
 
     def fetch_uids_from_server(self) -> bytes:

@@ -3,7 +3,7 @@ from typing import List
 
 import pandas as pd
 
-from . import descriptor, sanitize
+from . import sanitize
 
 
 class Email:

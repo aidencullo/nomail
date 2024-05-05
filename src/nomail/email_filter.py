@@ -1,10 +1,10 @@
-from typing import List
+from typing import List, Optional
 
 from .email import Email
 
 
 class ListFilter():
-    def __init__(self, address_list: List[str] = None):
+    def __init__(self, address_list: Optional[List[str]] = None):
         if address_list is None:
             address_list = []
         self._address_list = address_list
