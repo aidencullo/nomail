@@ -2,7 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from nomail.sanitize import format_date, format_email, format_subject, format_uid
+from nomail.sanitize import (format_date, format_email, format_subject,
+                             format_uid)
 
 
 class TestSanitize:

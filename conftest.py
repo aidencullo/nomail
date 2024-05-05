@@ -1,9 +1,10 @@
 from pathlib import Path
+from unittest.mock import Mock, patch
 
 import pytest
-from unittest.mock import patch, Mock
 
 from nomail.email import Email, EmailList
+
 
 @pytest.fixture(name='TEST_DATA_DIR')
 def fixture_data_path():

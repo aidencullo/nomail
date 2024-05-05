@@ -1,8 +1,7 @@
-from . import (email, imap)
+from . import email, imap
 
 
 class EmailImapAdapter(imap.Imap):
-
     def __init__(self):
         super().__init__()
 

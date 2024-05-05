@@ -1,9 +1,10 @@
 from typing import Optional
 
-from .adapter import EmailImapAdapter
-from .email_filter import ListFilter
-from .email import EmailList
 from .action import Action
+from .adapter import EmailImapAdapter
+from .email import EmailList
+from .email_filter import ListFilter
+
 
 def run(action: Action, filter: ListFilter, rate_limit: int = 1) -> EmailList:
     _imap: EmailImapAdapter = EmailImapAdapter()

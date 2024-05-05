@@ -1,8 +1,8 @@
 from datetime import datetime
 from unittest.mock import Mock, patch
 
-import pytest
 import pandas as pd
+import pytest
 
 from nomail import output
 

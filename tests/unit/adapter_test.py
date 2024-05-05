@@ -1,8 +1,8 @@
 from unittest.mock import Mock, patch
 
-from nomail.adapter import EmailImapAdapter
-
 import pytest
+
+from nomail.adapter import EmailImapAdapter
 
 
 @pytest.mark.skip(reason="Skipping this CLASS level test")

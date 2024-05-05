@@ -3,7 +3,7 @@ from unittest.mock import Mock, create_autospec, patch
 import pytest
 
 from nomail.action import (Action, ActionCopy, ActionDelete, ActionMove,
-                        ActionPrint)
+                           ActionPrint)
 from nomail.email import Email
 
 

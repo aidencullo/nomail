@@ -1,8 +1,8 @@
 from importlib.metadata import version
-from .session import noop
+
 from .action import ActionNone
 from .email_filter import ListFilter
-
+from .session import noop
 
 __version__ = version("nomail")
 

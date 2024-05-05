@@ -1,10 +1,9 @@
-from typing import List
 from dataclasses import dataclass, field
+from typing import List
 
 import pandas as pd
 
-from . import sanitize
-from . import descriptor
+from . import descriptor, sanitize
 
 
 class Email:
