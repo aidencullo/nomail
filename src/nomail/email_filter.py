@@ -3,7 +3,12 @@ from typing import List, Optional
 from .email import Email
 
 
-class ListFilter():
+class Filter():
+    def apply(self, email: Email) -> bool:
+        return True
+
+
+class ListFilter(Filter):
     def __init__(self, address_list: Optional[List[str]] = None):
         if address_list is None:
             address_list = []

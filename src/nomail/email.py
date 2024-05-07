@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional, Iterable
 
 import pandas as pd
 
@@ -24,30 +24,3 @@ class Email:
         if not isinstance(other, self.__class__):
             return NotImplemented
         return self.__dict__ == other.__dict__
-
-
-@dataclass
-class EmailList:
-    emails: List[Email] = field(default_factory=list)
-
-    def __init__(self, emails):
-        self.emails = list(emails)
-
-    def __iter__(self):
-        for email in self.emails:
-            yield email
-
-    def __getitem__(self, index):
-        return self.emails[index]
-
-    def __len__(self):
-        return len(self.emails)
-
-    def to_df(self):
-        return pd.DataFrame(self.emails)
- 
-    def limit(self, rate_limit):
-        return EmailList(self[:rate_limit])
- 
-    def filter(self, email_filter):
-        return EmailList(email for email in self.emails if email_filter.test(email))

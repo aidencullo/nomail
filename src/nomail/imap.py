@@ -7,7 +7,7 @@ from .env import CREDENTIALS, PROVIDER
 from .util import split_bytes
 
 
-class Imap():
+class Imap:
 
     def __init__(self):
         try:
@@ -45,8 +45,8 @@ class Imap():
     def noop(self) -> None:
         print(self._imap.noop())
 
-    def delete_msg(self, uid: int) -> None:
+    def delete_msg(self, uid: bytes) -> None:
         self._imap.store(uid, '+X-GM-LABELS', '\\Trash')
 
-    def copy_msg(self, uid: int) -> None:
+    def copy_msg(self, uid: bytes) -> None:
         self._imap.copy(uid, "Trabajos")

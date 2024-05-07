@@ -1,25 +1,31 @@
-from . import email, imap
+from email.message import Message
+from typing import List
+
+from . import imap
+from .email import Email
+from .emaillist import EmailList
+from .email_filter import Filter
 
 
 class EmailImapAdapter(imap.Imap):
     def __init__(self):
         super().__init__()
 
-    def apply(self, email_filter, rate_limit: int = 1) -> email.EmailList:
+    def apply(self, email_filter: Filter, rate_limit: int = 1) -> EmailList:
         return self.get_emails().limit(rate_limit).filter(email_filter)
 
-    def get_emails(self) -> email.EmailList:
-        return email.EmailList([email.Email(msg, uid) for msg, uid in
+    def get_emails(self) -> EmailList:
+        return EmailList([Email(msg, uid) for msg, uid in
                                 zip(self.get_msgs(), self.get_uids())])
 
-    def get_msgs(self):
+    def get_msgs(self) -> List[Message]:
         return super().get_msgs()
 
-    def get_uids(self):
+    def get_uids(self) -> List[bytes]:
         return super().get_uids()
 
-    def delete_msg(self, user_email):
+    def delete_email(self, user_email: Email) -> None:
         super().delete_msg(bytes(str(user_email.uid), 'ascii'))
 
-    def copy_msg(self, user_email):
+    def copy_email(self, user_email: Email) -> None:
         super().copy_msg(bytes(str(user_email.uid), 'ascii'))

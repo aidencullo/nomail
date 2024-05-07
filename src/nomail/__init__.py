@@ -13,7 +13,7 @@ def filter(rate_limit: int = 1):
     print_summary(emails)
 
 
-def get_blacklist():
+def get_blacklist() -> list[str]:
     try:
         with open('blacklist.csv') as f:
             blacklist = f.read().splitlines()

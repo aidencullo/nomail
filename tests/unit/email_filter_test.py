@@ -2,7 +2,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from nomail.filter import EmailFilterList
+from nomail.email_filter import ListFilter
 
 
 def email_mock_factory(sender):

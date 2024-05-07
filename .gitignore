@@ -18,3 +18,4 @@ nomail.py
 # data
 /data/
 /dist/
+*.sqlite3

@@ -3,7 +3,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from nomail.email import Email, EmailList
+from nomail.email import Email
+from nomail.emaillist import EmailList
 
 
 @pytest.fixture(name='TEST_DATA_DIR')
