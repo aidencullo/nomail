@@ -1,16 +1,17 @@
 from email.message import Message
+from typing import Optional
 
 from . import imap
 from .email import Email
 from .emaillist import EmailList
-from .email_filter import Filter
+from .email_filter import Filter, NullFilter
 
 
 class EmailImapAdapter(imap.Imap):
     def __init__(self):
         super().__init__()
 
-    def apply(self, email_filter: Filter, rate_limit: int = 1) -> EmailList:
+    def apply(self, email_filter: Optional[Filter] = None, rate_limit: int = 1) -> EmailList:
         return self.get_emails().limit(rate_limit).filter(email_filter)
 
     def get_emails(self) -> EmailList:

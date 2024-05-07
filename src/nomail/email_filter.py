@@ -16,3 +16,8 @@ class ListFilter(Filter):
 
     def apply(self, email: Email) -> bool:
         return email.sender in self._address_list
+
+
+class NullFilter(Filter):
+    def apply(self, email: Email) -> bool:
+        return email.sender
