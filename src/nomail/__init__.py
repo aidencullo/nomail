@@ -14,13 +14,8 @@ def filter(rate_limit: int = 1):
 
 
 def get_blacklist() -> list[str]:
-    try:
-        with open('blacklist.csv') as f:
-            blacklist = f.read().splitlines()
-    except FileNotFoundError:
-        print("blacklist.csv not found")
-        blacklist = []
-    return blacklist
+    with open('blacklist.csv') as file:
+        return file.read().splitlines()
         
 
 def print_summary(emails):

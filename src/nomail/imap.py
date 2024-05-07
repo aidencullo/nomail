@@ -1,6 +1,5 @@
 import email
 import imaplib
-from typing import List
 from email.message import Message
 
 from .env import CREDENTIALS, PROVIDER
@@ -23,7 +22,7 @@ class Imap:
         self._imap.login(*CREDENTIALS)
         self._imap.select()
 
-    def get_msgs(self) -> List[Message]:
+    def get_msgs(self) -> list[Message]:
         return [self.get_msg_data(uid) for uid in self.get_uids()]
 
     def get_msg_data(self, uid: bytes) -> Message:
@@ -32,7 +31,7 @@ class Imap:
     def fetch_msg_from_server(self, uid: bytes) -> bytes:
         return self._imap.fetch(uid, "(RFC822)")[1][0][1]
 
-    def get_uids(self) -> List[bytes]:
+    def get_uids(self) -> list[bytes]:
         return split_bytes(self.fetch_uids_from_server())
 
     def fetch_uids_from_server(self) -> bytes:

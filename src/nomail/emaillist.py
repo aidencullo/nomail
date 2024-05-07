@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Iterable
+from typing import Optional, Iterable
 
 import pandas as pd
 
@@ -9,7 +9,7 @@ from .email import Email
 
 @dataclass
 class EmailList:
-    emails: List[Email] = field(default_factory=list)
+    emails: list[Email] = field(default_factory=list)
 
     def __init__(self, emails: Optional[Iterable[Email]] = None):
         if emails is None:

@@ -1,5 +1,4 @@
 from email.message import Message
-from typing import List
 
 from . import imap
 from .email import Email
@@ -18,10 +17,10 @@ class EmailImapAdapter(imap.Imap):
         return EmailList([Email(msg, uid) for msg, uid in
                                 zip(self.get_msgs(), self.get_uids())])
 
-    def get_msgs(self) -> List[Message]:
+    def get_msgs(self) -> list[Message]:
         return super().get_msgs()
 
-    def get_uids(self) -> List[bytes]:
+    def get_uids(self) -> list[bytes]:
         return super().get_uids()
 
     def delete_email(self, user_email: Email) -> None:
