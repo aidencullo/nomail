@@ -12,9 +12,7 @@ def fixture_df():
     return pd.DataFrame({'col1': [1, 2], 'col2': [4, 3]})
 
 
-@pytest.mark.skip(reason="Skipping this CLASS level test")
 class TestOutput:
-
     @pytest.mark.parametrize('datetime_mock, expected', (
         (datetime(2015, 1, 1, 12, 30, 59, 0), 'logs/2015-01-01_12:30:59'),
         (datetime(2015, 2, 1, 12, 30, 59, 0), 'logs/2015-02-01_12:30:59'),

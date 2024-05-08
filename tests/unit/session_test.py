@@ -9,10 +9,9 @@ from nomail.session import run
 def fixture_emails():
     return [None] * 10
 
-@pytest.mark.skip(reason="Skipping this CLASS level test")
 class TestSession:
     @patch('nomail.action.Action', autospec=True)
-    @patch('nomail.email_filter.EmailFilter', autospec=True)
+    @patch('nomail.email_filter.ListFilter', autospec=True)
     @patch('nomail.session.EmailImapAdapter', autospec=True)
     def test_run(self, mock_email_imap_adapter, mock_email_filter, mock_action, mock_emails):
         mock_apply = mock_email_imap_adapter.return_value.apply
