@@ -1,26 +1,25 @@
 from nomail.util import split_bytes, to_int
 
+import pytest
+
 
 class TestUtil:
+    @pytest.fixture
+    def byte_str(self):
+        return b'1 2 3 4 5'
 
-    def test_split_bytes(self):
+    @pytest.fixture
+    def byte_arr(self):
+        return [b'1', b'2', b'3', b'4', b'5']
 
-        # Arrange
-        byte_str = b'1 2 3 4 5'
-        expected = [b'1', b'2', b'3', b'4', b'5']
+    @pytest.fixture
+    def int_arr(self):
+        return [1, 2, 3, 4, 5]
 
-        # Act
+    def test_split_bytes(self, byte_str, byte_arr):
         result = split_bytes(byte_str)
-        # Assert
-        assert result == expected
+        assert result == byte_arr
 
-    def test_to_int(self):
-
-        # Arrange
-        byte = [b'1']
-        expected = [1]
-
-        # Act
-        result = to_int(byte)
-        # Assert
-        assert result == expected
+    def test_to_int(self, byte_arr, int_arr):
+        result = to_int(byte_arr)
+        assert result == int_arr
