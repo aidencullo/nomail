@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
-from .adapter import EmailImapAdapter
+from .imap import Imap
 from .email import Email
 
 
 class Action(ABC):
     def __init__(self):
-        self._imap = EmailImapAdapter()
+        self._imap = Imap()
 
     @abstractmethod
     def act(self, email: Email) -> None:
@@ -21,11 +21,6 @@ class ActionDelete(Action):
 class ActionCopy(Action):
     def act(self, email: Email) -> None:
         self._imap.copy_msg(email)
-
-
-class ActionPrint(Action):
-    def act(self, email: Email) -> None:
-        print(email.sender)
 
 
 class ActionMove(Action):

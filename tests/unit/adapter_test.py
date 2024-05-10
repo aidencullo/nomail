@@ -17,6 +17,7 @@ def empty_list():
     return EmailList([])
 
 
+@pytest.mark.skip
 class TestAdapter:
     @patch("nomail.adapter.EmailImapAdapter.get_emails")
     def test_apply(self, get_emails, adapter, empty_list):

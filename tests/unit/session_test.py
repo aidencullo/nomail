@@ -5,9 +5,10 @@ import pytest
 from nomail.session import run
 
 
-@pytest.fixture(name="mock_emails")
-def fixture_emails():
+@pytest.fixture
+def mock_emails():
     return [None] * 10
+
 
 class TestSession:
     @patch('nomail.action.Action', autospec=True)

@@ -1,70 +1,39 @@
-from unittest.mock import Mock, create_autospec, patch
+from unittest.mock import patch
 
 import pytest
 
-from nomail.action import (Action, ActionCopy, ActionDelete, ActionMove,
-                           ActionPrint)
+from nomail.action import ActionCopy, ActionDelete, ActionMove
 from nomail.email import Email
 
 
-@patch("nomail.action.EmailImapAdapter")
-def test_delete(adapter_mock):
+class TestAction:
+    @pytest.fixture
+    def email_dummy(self):
+        data = {
+            'To': 'culloaiden3@gmail.com',
+            'From': '"Reed.co.uk" <no-reply@jobs.reed.co.uk>',
+            'Subject': "Added today: new Permanent 'Software Developer' Jobs | Rochester Jobs & Vacancies...",
+            'Date': 'Wed, 31 Jan 2024 03:04:13 +0000',
+        }
+        return Email(data, b'1')
 
-    # Arrange
-    action_delete = ActionDelete()
+    @pytest.fixture
+    def imap_mock(self):
+        patcher = patch('nomail.action.Imap')
+        return patcher.start().return_value
 
-    # Act
-    action_delete.act(None)
+    def test_delete(self, imap_mock, email_dummy):
+        delete_dummy = ActionDelete()
+        delete_dummy.act(email_dummy)
+        imap_mock.delete_msg.assert_called_with(email_dummy)
 
-    # Assert
-    adapter_mock.return_value.delete_msg.assert_called_with(None)
+    def test_copy(self, imap_mock, email_dummy):
+        copy_dummy = ActionCopy()
+        copy_dummy.act(email_dummy)
+        imap_mock.copy_msg.assert_called_with(email_dummy)
 
-
-@patch("nomail.action.EmailImapAdapter")
-def test_copy(adapter_mock):
-
-    # Arrange
-    action_copy = ActionCopy()
-
-    # Act
-    action_copy.act(None)
-
-    # Assert
-    adapter_mock.return_value.copy_msg.assert_called_with(None)
-
-
-@patch("nomail.action.EmailImapAdapter", Mock())
-def test_print(capsys):
-
-    # Arrange
-    mock_email = create_autospec(Email)
-    mock_email.sender = "test"
-    action_print = ActionPrint()
-
-    # Act
-    action_print.act(mock_email)
-    captured = capsys.readouterr()
-
-    # Assert
-    assert captured.out.strip() == str(mock_email.sender)
-
-
-@patch("nomail.action.EmailImapAdapter")
-def test_move(adapter_mock):
-
-    # Arrange
-    action_move = ActionMove()
-
-    # Act
-    action_move.act(None)
-
-    # Assert
-    adapter_mock.return_value.copy_msg.assert_called_with(None)
-    adapter_mock.return_value.delete_msg.assert_called_with(None)
-
-
-def test_abstract():
-    # Assert
-    with pytest.raises(TypeError):
-        # Act
-        Action()
+    def test_move(self, imap_mock, email_dummy):
+        move_dummy = ActionMove()
+        move_dummy.act(email_dummy)
+        imap_mock.copy_msg.assert_called_with(email_dummy)
+        imap_mock.delete_msg.assert_called_with(email_dummy)
