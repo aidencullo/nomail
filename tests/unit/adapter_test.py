@@ -11,16 +11,19 @@ from nomail.emaillist import EmailList
 def adapter():
     return EmailImapAdapter()
 
-
 @pytest.fixture(name="empty_list")
 def empty_list():
     return EmailList([])
 
+@pytest.fixture
+def get_emails():
+    patcher = patch('nomail.adapter.EmailImapAdapter.get_emails')
+    return patcher.start()
 
-@pytest.mark.skip
 class TestAdapter:
-    @patch("nomail.adapter.EmailImapAdapter.get_emails")
-    def test_apply(self, get_emails, adapter, empty_list):
+    @patch('nomail.adapter.imap.imaplib')
+    def test_apply(self, imaplib, get_emails, empty_list):
+        adapter = EmailImapAdapter()
         get_emails.return_value = empty_list
         expected_emails = empty_list
 

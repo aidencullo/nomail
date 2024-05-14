@@ -7,7 +7,6 @@ from .util import split_bytes
 
 
 class Imap:
-
     def __init__(self):
         try:
             self._imap = imaplib.IMAP4_SSL(PROVIDER)
