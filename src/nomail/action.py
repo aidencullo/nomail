@@ -31,4 +31,5 @@ class ActionMove(Action):
 
 class ActionNone(Action):
     def act(self, email: Email) -> None:
+        print(email)
         pass

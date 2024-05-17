@@ -15,6 +15,7 @@ def filter(rate_limit: int = 1):
 
 def get_blacklist() -> list[str]:
     with open('blacklist.csv') as file:
+        print(f'blacklist={file.read().splitlines()}')
         return file.read().splitlines()
         
 

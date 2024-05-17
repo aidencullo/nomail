@@ -10,10 +10,10 @@ class Imap:
     def __init__(self):
         try:
             self._imap = imaplib.IMAP4_SSL(PROVIDER)
-        except ConnectionRefusedError:
+        except ConnectionRefusedError as e:
             print("couldn't connect to imap email server")
             print("this is most likely due to incorrect credentials, check your env file")
-            return
+            raise e
         except BaseException as e:
             print(f'{e=}')
             print(f'PROVIDER={PROVIDER}')
@@ -28,17 +28,18 @@ class Imap:
         return email.message_from_bytes(self.fetch_msg_from_server(uid))
 
     def fetch_msg_from_server(self, uid: bytes) -> bytes:
-        return self._imap.fetch(uid, "(RFC822)")[1][0][1]
+        print(f'fetching {uid=}')
+        typ, data = self._imap.fetch(uid, '(RFC822)')
+        return data[0][1]
 
     def get_uids(self) -> list[bytes]:
-        return split_bytes(self.fetch_uids_from_server())
+        return self.fetch_uids_from_server()
 
     def fetch_uids_from_server(self) -> bytes:
-        sender = "no-reply@computrabajo.com"
-        email = f'FROM {sender}'
-        ids = self._imap.search(None, email)[1][0]
-        return ids
-        # return self._imap.search(None, "ALL")[1][0]
+        M = self._imap
+        typ, data = M.search(None, 'ALL')
+        data = data[0].split()[:10]
+        return data
 
     def noop(self) -> None:
         print(self._imap.noop())
