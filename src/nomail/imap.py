@@ -25,10 +25,12 @@ class Imap:
         return [self.get_msg_data(uid) for uid in self.get_uids()]
 
     def get_msg_data(self, uid: bytes) -> Message:
-        return email.message_from_bytes(self.fetch_msg_from_server(uid))
+        fetched = self.fetch_msg_from_server(uid)
+        email_message = email.message_from_bytes(fetched)
+        print(f'{email_message["From"]=}')
+        return email_message
 
     def fetch_msg_from_server(self, uid: bytes) -> bytes:
-        print(f'fetching {uid=}')
         typ, data = self._imap.fetch(uid, '(RFC822)')
         return data[0][1]
 
@@ -38,7 +40,8 @@ class Imap:
     def fetch_uids_from_server(self) -> bytes:
         M = self._imap
         typ, data = M.search(None, 'ALL')
-        data = data[0].split()[:10]
+        throttle = 5
+        data = data[0].split()[::-1][:throttle]
         return data
 
     def noop(self) -> None:

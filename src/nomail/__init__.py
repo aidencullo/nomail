@@ -1,7 +1,7 @@
 from importlib.metadata import version
 
-from .action import ActionNone
-from .email_filter import ListFilter
+from .action import ActionNone, ActionDelete
+from .email_filter import ListFilter, NullFilter
 from .session import run
 
 __version__ = version("nomail")
@@ -9,13 +9,12 @@ __version__ = version("nomail")
 
 def filter(rate_limit: int = 1):
     blacklist = get_blacklist()
-    emails = run(ActionNone(), ListFilter(blacklist), rate_limit)
+    emails = run(ActionDelete(), ListFilter(blacklist), rate_limit)
     print_summary(emails)
 
 
 def get_blacklist() -> list[str]:
     with open('blacklist.csv') as file:
-        print(f'blacklist={file.read().splitlines()}')
         return file.read().splitlines()
         
 

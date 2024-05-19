@@ -2,7 +2,14 @@ from . import sanitize
 
 
 class Email:
-    def __init__(self, msg_data, uid):
+
+    recipient: str
+    sender: str
+    subject: str
+    date: str
+    uid: int
+
+    def __init__(self, msg_data: list[str], uid: bytes):
         self.recipient = sanitize.format_email(msg_data['To'])
         self.sender = sanitize.format_email(msg_data['From'])
         self.subject = sanitize.format_subject(msg_data['Subject'])

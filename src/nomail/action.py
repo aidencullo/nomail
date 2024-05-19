@@ -15,7 +15,7 @@ class Action(ABC):
 
 class ActionDelete(Action):
     def act(self, email: Email) -> None:
-        self._imap.delete_msg(email)
+        self._imap.delete_msg(email.uid)
 
 
 class ActionCopy(Action):

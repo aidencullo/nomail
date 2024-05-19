@@ -29,5 +29,5 @@ def decode_bytes(subject: bytes) -> str:
         return subject.decode('unicode_escape')
 
 
-def format_uid(uid: str) -> int:
-    return int(uid)
+def format_uid(uid: bytes) -> bytes:
+    return uid

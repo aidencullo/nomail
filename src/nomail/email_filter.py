@@ -15,7 +15,8 @@ class ListFilter(Filter):
         self._address_list = address_list
 
     def apply(self, email: Email) -> bool:
-        print(f'{email.sender=} {self._address_list=}')
+        print(email.sender)
+        print(self._address_list)
         return email.sender in self._address_list
 
 
